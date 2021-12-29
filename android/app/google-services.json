@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "77325919838",
+    "project_id": "polearn-2a7ee",
+    "storage_bucket": "polearn-2a7ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77325919838:android:1fa41826843378a6c3f6cf",
+        "android_client_info": {
+          "package_name": "com.example.polearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77325919838-jemj6ueemop9dv16qtcbh9en0b34neso.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.polearn",
+            "certificate_hash": "ee982c3b8e27ddffcd628057911c5b099158acb2"
+          }
+        },
+        {
+          "client_id": "77325919838-sd1ehm6tg91epmbvbbr1t8dmlt40oe2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACdMc9OwfET_Oh5Z7JzAXC4xaiNKe7veM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77325919838-sd1ehm6tg91epmbvbbr1t8dmlt40oe2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\flutter\\projects\\polearn\\build\\path_provider_android\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\R&D\\.gradle\\caches\\transforms-2\\files-2.1\\867d687cf59dafa098f18bfd31a2bfbb\\core-1.1.0\\res\\drawable\\notification_icon_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\flutter\\projects\\polearn\\build\\path_provider_android\\intermediates\\res\\merged\\debug\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\R&D\\.gradle\\caches\\transforms-2\\files-2.1\\867d687cf59dafa098f18bfd31a2bfbb\\core-1.1.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\flutter\\projects\\polearn\\build\\path_provider_android\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\R&D\\.gradle\\caches\\transforms-2\\files-2.1\\867d687cf59dafa098f18bfd31a2bfbb\\core-1.1.0\\res\\drawable\\notification_bg_low.xml"
+    },
+    {
+        "merged": "C:\\Users\\flutter\\projects\\polearn\\build\\path_provider_android\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\R&D\\.gradle\\caches\\transforms-2\\files-2.1\\867d687cf59dafa098f18bfd31a2bfbb\\core-1.1.0\\res\\drawable\\notification_tile_bg.xml"
+    }
+]

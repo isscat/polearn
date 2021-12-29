@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">77325919838-sd1ehm6tg91epmbvbbr1t8dmlt40oe2r.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">77325919838</string>
+    <string name="google_api_key" translatable="false">AIzaSyACdMc9OwfET_Oh5Z7JzAXC4xaiNKe7veM</string>
+    <string name="google_app_id" translatable="false">1:77325919838:android:1fa41826843378a6c3f6cf</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyACdMc9OwfET_Oh5Z7JzAXC4xaiNKe7veM</string>
+    <string name="google_storage_bucket" translatable="false">polearn-2a7ee.appspot.com</string>
+    <string name="project_id" translatable="false">polearn-2a7ee</string>
+</resources>
