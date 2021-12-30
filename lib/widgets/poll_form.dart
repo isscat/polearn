@@ -28,12 +28,9 @@ class _RoundedAlertBoxState extends State<RoundedAlertBox> {
   bool isTapped = false;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          openAlertBox();
-        },
+    return FloatingActionButton(
+        onPressed: openAlertBox,
         child: Container(
-          margin: const EdgeInsets.all(15),
           width: 65,
           height: 60,
           decoration: BoxDecoration(
@@ -101,7 +98,7 @@ class _RoundedAlertBoxState extends State<RoundedAlertBox> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Text(
                       "Choose Answer Option!",
                       style: TextStyle(color: Colors.green[400]),
