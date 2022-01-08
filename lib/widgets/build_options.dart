@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 enum Option { op1, op2, op3, op4 }
-Map msg = {"ans": "op1"};
+Map msg = {};
 
 class BuildOptions extends StatefulWidget {
   BuildOptions({Key? key, required Map message}) : super(key: key) {
     msg = message;
+    msg["ans"] = "op1";
   }
 
   @override

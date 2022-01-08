@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../score_widget.dart';
 
@@ -17,15 +18,18 @@ class Messages extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection(chatName)
-          .orderBy('createdAt')
+          .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
           final chatDocs = snapshot.data?.docs;
+          Color myCol = Color.fromRGBO(255, 239, 239, 1);
+          Color senderCol = Colors.white;
           return ListView.builder(
-              // reverse: true,
+              reverse: true,
+              // controller: controller,
               itemCount: chatDocs?.length,
               itemBuilder: (context, index) {
                 bool isMe = chatDocs?[index]['user'] ==
@@ -35,42 +39,43 @@ class Messages extends StatelessWidget {
                   mainAxisAlignment:
                       isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Container(
-                        height: 270,
-                        margin: isMe
-                            ? EdgeInsets.only(left: 30, top: 10, bottom: 10)
-                            : EdgeInsets.only(right: 30, top: 10, bottom: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            ScoreWidget(
-                              userid: chatDocs?[index]['user'],
-                            ),
-                            Text(chatDocs?[index]["question"]),
-                            buildPoll(chatDocs?[index])
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: isMe
-                              ? const Color.fromRGBO(112, 195, 231, 16)
-                              : Colors.black12,
-                          borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(12),
-                            topRight: const Radius.circular(12),
-                            bottomLeft: !isMe
-                                ? const Radius.circular(0)
-                                : const Radius.circular(12),
-                            bottomRight: isMe
-                                ? const Radius.circular(0)
-                                : const Radius.circular(12),
+                    Container(
+                      height: 380,
+                      width: 320,
+                      margin: isMe
+                          ? EdgeInsets.only(
+                              left: 30, top: 10, bottom: 10, right: 5)
+                          : EdgeInsets.only(
+                              right: 30, top: 10, bottom: 10, left: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ScoreWidget(
+                            userid: chatDocs?[index]['user'],
                           ),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
-                        // margin: const EdgeInsets.symmetric(
-                        //     horizontal: 10, vertical: 10),
+                          Text(chatDocs?[index]["question"]),
+                          buildPoll(
+                              chatDocs?[index], (isMe) ? myCol : senderCol),
+                        ],
                       ),
+                      decoration: BoxDecoration(
+                        color: isMe
+                            ? myCol
+                            // fromRGBO(211, 222, 220, 1)
+                            : senderCol,
+                        borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(12),
+                          topRight: const Radius.circular(12),
+                          bottomLeft: !isMe
+                              ? const Radius.circular(0)
+                              : const Radius.circular(12),
+                          bottomRight: isMe
+                              ? const Radius.circular(0)
+                              : const Radius.circular(12),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                     )
                   ],
                 );
@@ -80,28 +85,36 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Widget buildPoll(QueryDocumentSnapshot<Object?>? curMsg) {
+  Widget buildPoll(QueryDocumentSnapshot<Object?>? curMsg, Color clr) {
     return Container(
-      height: 150,
+      height: 225,
       child: ListView.builder(
-        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           String s = "op" + (index + 1).toString();
-          return Container(
-            height: 35,
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => null,
-                  icon: Icon(
-                    Icons.radio_button_off,
-                    color: Colors.blue,
-                  ),
-                ),
-                Text(curMsg?[s])
-              ],
-            ),
-          );
+          return Card(
+              elevation: 2,
+              color: clr,
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        if (s == curMsg?["ans"]) {
+                          print("correct Answer");
+                        }
+                      },
+                      icon: Icon(
+                        Icons.radio_button_off,
+                        color: Colors.black,
+                      )),
+                  Expanded(
+                    child: Text(
+                      curMsg?[s],
+                      maxLines: 3,
+                    ),
+                  )
+                ],
+              ));
         },
         itemCount: 4,
       ),
@@ -116,4 +129,22 @@ class Messages extends StatelessWidget {
   // radioButtonPressed(QueryDocumentSnapshot<Object?>? curMsg, int index) {
 
   // }
+  // Container(
+  //             margin: EdgeInsets.all(5),
+  //             height: 35,
+  //             decoration: BoxDecoration(
+  //               border: Border(bottom: BorderSide(color: Colors.black)),
+  //             ),
+  //             child: Row(
+  //               children: [
+  //                 IconButton(
+  //                     onPressed: null,
+  //                     icon: Icon(
+  //                       Icons.radio_button_off,
+  //                       color: Colors.black,
+  //                     )),
+  //                 Text(curMsg?[s])
+  //               ],
+  //             ));
+
 }

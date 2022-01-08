@@ -33,9 +33,9 @@ class _ScoreWidgetState extends State<ScoreWidget> {
               curMsgUser?['lang'] +
               curMsgUser?['neet'] +
               curMsgUser?['tech'];
-          return Container(
+          return SizedBox(
             // color: Colors.amber,
-            height: 80,
+            height: 70,
             child: Row(
               children: [
                 buildProfile(curMsgUser?['photoUrl']),
@@ -53,8 +53,8 @@ class _ScoreWidgetState extends State<ScoreWidget> {
       onTap: () {},
       child: Container(
         margin: const EdgeInsets.all(10),
-        width: 55,
-        height: 60,
+        width: 45,
+        height: 50,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white, width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -74,9 +74,9 @@ class _ScoreWidgetState extends State<ScoreWidget> {
           Row(
             children: [
               Container(
-                height: 25,
+                height: 17,
                 width: 20,
-                margin: const EdgeInsets.all(13),
+                margin: const EdgeInsets.all(9),
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/points.png"),

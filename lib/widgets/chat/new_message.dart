@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:polearn/widgets/poll_form.dart';
 
 // ignore: must_be_immutable
+
 class NewMessage extends StatefulWidget {
   String chatName = "";
   NewMessage({Key? key, required String chat}) : super(key: key) {

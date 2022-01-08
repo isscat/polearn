@@ -110,21 +110,27 @@ class _RoundedAlertBoxState extends State<RoundedAlertBox> {
                   // buildExplanation()
                   InkWell(
                     onTap: () {
-                      FirebaseFirestore.instance.collection(chatName).add({
+                      DocumentReference documentReference =
+                          FirebaseFirestore.instance.collection(chatName).doc();
+                      documentReference.set({
                         'question': message['question'],
                         'op1': message['op1'],
                         'op2': message['op2'],
                         'op3': message['op3'],
                         'op4': message['op4'],
-                        'ans': message['ans'],
+                        'ans':
+                            (message['ans'] != null) ? message['ans'] : "op1",
                         "op1Count": 0,
                         "op2Count": 0,
                         "op3Count": 0,
                         "op4Count": 0,
                         "user": FirebaseAuth.instance.currentUser?.uid,
                         "category": chatName.toLowerCase(),
-                        "createdAt": Timestamp.now()
+                        "createdAt": Timestamp.now(),
+                        "answered_users": [],
+                        'msgid': documentReference.id
                       });
+
                       Navigator.of(context, rootNavigator: true).pop();
                     },
                     child: Container(
