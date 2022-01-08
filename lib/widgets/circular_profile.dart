@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:polearn/provider/google_sign_in.dart';
+
+import 'package:polearn/screens/home_page.dart';
 import 'package:provider/provider.dart';
 
 Widget buildProfile(final user, BuildContext context) {
@@ -8,6 +10,9 @@ Widget buildProfile(final user, BuildContext context) {
       final provider =
           Provider.of<GoogleSignInProvider>(context, listen: false);
       provider.logout();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (Route<dynamic> route) => false);
     },
     child: Container(
       margin: const EdgeInsets.all(15),

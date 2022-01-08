@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../score_widget.dart';
 
@@ -25,27 +24,27 @@ class Messages extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else {
           final chatDocs = snapshot.data?.docs;
-          Color myCol = Color.fromRGBO(255, 239, 239, 1);
+          Color myCol = const Color.fromRGBO(255, 239, 239, 1);
           Color senderCol = Colors.white;
+          String? curUser = FirebaseAuth.instance.currentUser?.uid;
           return ListView.builder(
               reverse: true,
               // controller: controller,
               itemCount: chatDocs?.length,
               itemBuilder: (context, index) {
-                bool isMe = chatDocs?[index]['user'] ==
-                    FirebaseAuth.instance.currentUser?.uid;
+                bool isMe = chatDocs?[index]['user'] == curUser;
 
                 return Row(
                   mainAxisAlignment:
                       isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                   children: [
                     Container(
-                      height: 380,
+                      height: 326,
                       width: 320,
                       margin: isMe
-                          ? EdgeInsets.only(
+                          ? const EdgeInsets.only(
                               left: 30, top: 10, bottom: 10, right: 5)
-                          : EdgeInsets.only(
+                          : const EdgeInsets.only(
                               right: 30, top: 10, bottom: 10, left: 5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,8 +53,8 @@ class Messages extends StatelessWidget {
                             userid: chatDocs?[index]['user'],
                           ),
                           Text(chatDocs?[index]["question"]),
-                          buildPoll(
-                              chatDocs?[index], (isMe) ? myCol : senderCol),
+                          buildPoll(chatDocs?[index],
+                              (isMe) ? myCol : senderCol, curUser),
                         ],
                       ),
                       decoration: BoxDecoration(
@@ -85,8 +84,36 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Widget buildPoll(QueryDocumentSnapshot<Object?>? curMsg, Color clr) {
-    return Container(
+  Widget buildPoll(
+      QueryDocumentSnapshot<Object?>? curMsg, Color clr, String? curUser) {
+    if (curMsg?["answered_users"].contains(curUser)) {
+      // var optCounts = [
+      //   curMsg?["op1Count"],
+      //   curMsg?["op2Count"],
+      //   curMsg?["op3Count"],
+      //   curMsg?["op4Count"]
+      // ];
+      return SizedBox(
+        height: 225,
+        child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            String s = "op" + (index + 1).toString();
+            return SizedBox(
+              height: 56,
+              child: Column(
+                children: [
+                  Text(curMsg?[s]),
+                ],
+              ),
+            );
+          },
+          itemCount: 4,
+        ),
+      );
+    }
+
+    return SizedBox(
       height: 225,
       child: ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
@@ -99,11 +126,15 @@ class Messages extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        if (s == curMsg?["ans"]) {
-                          print("correct Answer");
-                        }
+                        FirebaseFirestore.instance
+                            .collection(chatName)
+                            .doc(curMsg?["msgid"])
+                            .update({
+                          s + "Count": FieldValue.increment(1),
+                          'answered_users': FieldValue.arrayUnion([curUser])
+                        });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.radio_button_off,
                         color: Colors.black,
                       )),
