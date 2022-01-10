@@ -33,17 +33,17 @@ class CategoryScreen extends StatelessWidget {
                   assetName: "assets/science.png",
                 ),
                 CategoryContainer(
-                  chat: "general knowledge",
+                  chat: "general",
                   name: "General\nknowledge",
                   assetName: "assets/general.png",
                 ),
                 CategoryContainer(
-                  chat: "languages",
+                  chat: "lang",
                   name: "Languages",
                   assetName: "assets/lang.png",
                 ),
                 CategoryContainer(
-                  chat: "tech hacks",
+                  chat: "tech",
                   name: "Tech Hacks",
                   assetName: "assets/tech.png",
                 ),

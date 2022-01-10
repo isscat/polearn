@@ -29,6 +29,7 @@ class _ScoreWidgetState extends State<ScoreWidget> {
             return element['uid'] == widget.userId; // current message user
           });
           totalScore = curMsgUser?['gate'] +
+              curMsgUser?['science'] +
               curMsgUser?['general'] +
               curMsgUser?['lang'] +
               curMsgUser?['neet'] +
