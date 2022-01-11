@@ -3,6 +3,7 @@ import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:polearn/widgets/poll_form.dart';
 
 import '../score_widget.dart';
@@ -134,14 +135,14 @@ class _MessagesState extends State<Messages> {
                     Align(
                       alignment: Alignment.center,
                       child: ConfettiWidget(
-                        minimumSize: const Size(4, 10),
+                        minimumSize: const Size(4, 7),
                         maximumSize: const Size(10, 25),
-                        maxBlastForce: 50,
+                        maxBlastForce: 40,
                         minBlastForce: 20,
                         gravity: 0.4,
                         shouldLoop: false,
-                        emissionFrequency: 0.04,
-                        numberOfParticles: 60,
+                        emissionFrequency: 0.06,
+                        numberOfParticles: 70,
                         confettiController: _controllerCenter,
                         blastDirectionality: BlastDirectionality
                             .explosive, // don't specify a direction, blast randomly
@@ -170,6 +171,10 @@ class _MessagesState extends State<Messages> {
   ) {
     // print(curMsg?["user"] + "\n" + FirebaseAuth.);
     if (curMsg?["answered_users"].contains(curUser)) {
+      int total = curMsg?["op1Count"] +
+          curMsg?["op2Count"] +
+          curMsg?["op3Count"] +
+          curMsg?["op4Count"];
       return SizedBox(
         height: 225,
         child: ListView.builder(
@@ -180,7 +185,7 @@ class _MessagesState extends State<Messages> {
               height: 56,
               child: Column(
                 children: [
-                  Text(curMsg?[s]),
+                  buildColumn(curMsg, s, s == curMsg?["ans"], total),
                 ],
               ),
             );
@@ -219,7 +224,9 @@ class _MessagesState extends State<Messages> {
                               .doc(curMsg?["msgid"])
                               .update({
                             s + "Count": FieldValue.increment(1),
-                            'answered_users': FieldValue.arrayUnion([curUser])
+                            'answered_users': FieldValue.arrayUnion([
+                              {"user": curUser, "answered_opt": s}
+                            ])
                           });
                         }
                       },
@@ -237,6 +244,40 @@ class _MessagesState extends State<Messages> {
               ));
         },
         itemCount: 4,
+      ),
+    );
+  }
+
+  Widget buildColumn(
+      QueryDocumentSnapshot<Object?>? curMsg, String s, bool flag, int total) {
+    return Container(
+      // height: 225,
+      child: Column(
+        children: [
+          Text(curMsg?[s]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              (flag)
+                  ? Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                    )
+                  : Icon(
+                      Icons.dangerous,
+                      color: Colors.red,
+                    ),
+              LinearPercentIndicator(
+                width: 200.0,
+                lineHeight: 8.0,
+                percent: curMsg?[s + "Count"] / total,
+                progressColor: (flag) ? Colors.green : Colors.red,
+              ),
+              Text(((curMsg?[s + "Count"] / total * 100).ceil()).toString() +
+                  "%"),
+            ],
+          )
+        ],
       ),
     );
   }
