@@ -259,11 +259,11 @@ class _MessagesState extends State<Messages> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               (flag)
-                  ? Icon(
+                  ? const Icon(
                       Icons.check_circle,
                       color: Colors.green,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.dangerous,
                       color: Colors.red,
                     ),
