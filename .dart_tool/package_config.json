@@ -68,6 +68,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "csslib",
+      "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/csslib-0.17.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3",
       "packageUri": "lib/",
@@ -184,6 +190,12 @@
     {
       "name": "google_sign_in_web",
       "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.0+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/html-0.15.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -374,6 +386,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "web_scraper",
+      "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/web_scraper-0.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-2.3.1",
       "packageUri": "lib/",
@@ -392,7 +410,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-01-10T08:28:03.078566Z",
+  "generated": "2022-01-25T05:23:40.813908Z",
   "generator": "pub",
   "generatorVersion": "2.14.4"
 }

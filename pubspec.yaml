@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: ^2.5.4
   confetti: ^0.6.0
+  web_scraper: 
   
   provider: ^6.0.1
   font_awesome_flutter: ^9.2.0

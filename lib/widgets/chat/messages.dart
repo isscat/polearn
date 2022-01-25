@@ -22,17 +22,8 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
   late ConfettiController _controllerCenter;
 
-  late ConfettiController _controllerCenterRight;
-
-  late ConfettiController _controllerCenterLeft;
-
-  late ConfettiController _controllerTopCenter;
-
-  late ConfettiController _controllerBottomCenter;
-
   @override
   void initState() {
-    super.initState();
     super.initState();
 
     _controllerCenter =
@@ -42,10 +33,7 @@ class _MessagesState extends State<Messages> {
   @override
   void dispose() {
     _controllerCenter.dispose();
-    _controllerCenterRight.dispose();
-    _controllerCenterLeft.dispose();
-    _controllerTopCenter.dispose();
-    _controllerBottomCenter.dispose();
+
     super.dispose();
   }
 
@@ -136,13 +124,13 @@ class _MessagesState extends State<Messages> {
                       alignment: Alignment.center,
                       child: ConfettiWidget(
                         minimumSize: const Size(4, 7),
-                        maximumSize: const Size(10, 25),
-                        maxBlastForce: 40,
+                        maximumSize: const Size(7, 20),
+                        maxBlastForce: 50,
                         minBlastForce: 20,
                         gravity: 0.4,
                         shouldLoop: false,
-                        emissionFrequency: 0.06,
-                        numberOfParticles: 70,
+                        emissionFrequency: 0.01,
+                        numberOfParticles: 150,
                         confettiController: _controllerCenter,
                         blastDirectionality: BlastDirectionality
                             .explosive, // don't specify a direction, blast randomly
@@ -170,7 +158,13 @@ class _MessagesState extends State<Messages> {
     String? curUser,
   ) {
     // print(curMsg?["user"] + "\n" + FirebaseAuth.);
-    if (curMsg?["answered_users"].contains(curUser)) {
+    final find = curMsg?["answered_users"].firstWhere((element) {
+      if (element["user"] == FirebaseAuth.instance.currentUser?.uid) {
+        return true;
+      }
+      return false;
+    });
+    if (find != null) {
       int total = curMsg?["op1Count"] +
           curMsg?["op2Count"] +
           curMsg?["op3Count"] +
@@ -181,11 +175,23 @@ class _MessagesState extends State<Messages> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             String s = "op" + (index + 1).toString();
+            int flag = 2;
+            // ignore: curly_braces_in_flow_control_structures
+            if ((find["answered_opt"] == s)) if (find["answered_opt"] ==
+                curMsg?["ans"]) {
+              flag = 1;
+            } else {
+              flag = 3;
+            }
+            else {
+              flag = 2;
+            }
+
             return SizedBox(
               height: 56,
               child: Column(
                 children: [
-                  buildColumn(curMsg, s, s == curMsg?["ans"], total),
+                  buildColumn(curMsg, s, flag, total),
                 ],
               ),
             );
@@ -238,6 +244,7 @@ class _MessagesState extends State<Messages> {
                     child: Text(
                       curMsg?[s],
                       maxLines: 3,
+                      textAlign: TextAlign.left,
                     ),
                   )
                 ],
@@ -249,36 +256,42 @@ class _MessagesState extends State<Messages> {
   }
 
   Widget buildColumn(
-      QueryDocumentSnapshot<Object?>? curMsg, String s, bool flag, int total) {
-    return Container(
-      // height: 225,
-      child: Column(
-        children: [
-          Text(curMsg?[s]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              (flag)
-                  ? const Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                    )
-                  : const Icon(
-                      Icons.dangerous,
-                      color: Colors.red,
-                    ),
-              LinearPercentIndicator(
-                width: 200.0,
-                lineHeight: 8.0,
-                percent: curMsg?[s + "Count"] / total,
-                progressColor: (flag) ? Colors.green : Colors.red,
-              ),
-              Text(((curMsg?[s + "Count"] / total * 100).ceil()).toString() +
-                  "%"),
-            ],
-          )
-        ],
-      ),
+      QueryDocumentSnapshot<Object?>? curMsg, String s, int flag, int total) {
+    Color? myCol;
+    if (flag == 1) myCol = Colors.green;
+    if (flag == 2) myCol = Colors.red;
+    if (flag == 3) myCol = Colors.blue;
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            curMsg?[s],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            (flag == 1)
+                ? Icon(
+                    Icons.check_circle,
+                    color: myCol,
+                  )
+                : Icon(
+                    Icons.cancel,
+                    color: myCol,
+                  ),
+            LinearPercentIndicator(
+              width: 200.0,
+              lineHeight: 8.0,
+              percent: curMsg?[s + "Count"] / total,
+              progressColor: myCol,
+            ),
+            Text(
+                ((curMsg?[s + "Count"] / total * 100).ceil()).toString() + "%"),
+          ],
+        )
+      ],
     );
   }
 }
