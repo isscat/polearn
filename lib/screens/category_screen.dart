@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:polearn/widgets/category_container.dart';
 import 'package:polearn/widgets/circular_profile.dart';
+import 'package:polearn/widgets/score_widget.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -15,7 +16,11 @@ class CategoryScreen extends StatelessWidget {
           flexibleSpace: Container(
               margin: const EdgeInsets.only(top: 25),
               alignment: Alignment.topRight,
-              child: buildProfile(user.photoURL, context))),
+              child: Center(
+                child: ScoreWidget(
+                    userid: FirebaseAuth.instance.currentUser?.uid,
+                    isAppBar: true),
+              ))),
       body: CustomScrollView(
         primary: false,
         slivers: <Widget>[

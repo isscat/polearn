@@ -30,12 +30,12 @@ class CategoryContainer extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-              color: Colors.black, width: 1.0, style: BorderStyle.solid),
+              color: Colors.black, width: 0.0, style: BorderStyle.solid),
           boxShadow: const [
             BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.25),
+              color: Color.fromRGBO(0, 0, 0, 0.35),
               // soften the shadow
-              blurRadius: 4,
+              blurRadius: 3,
               spreadRadius: 0, //extend the shadow
               offset: Offset(
                 0, // Move to right 10  horizontally
@@ -52,7 +52,7 @@ class CategoryContainer extends StatelessWidget {
               alignment: Alignment.topCenter,
             ),
             Text(containerName,
-                style: GoogleFonts.roboto(
+                style: GoogleFonts.openSans(
                     color: const Color.fromRGBO(25, 52, 152, 1),
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0))

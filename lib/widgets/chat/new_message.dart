@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:polearn/widgets/poll_form.dart';
+import 'package:polearn/widgets/chat/messages/poll_form.dart';
 
 // ignore: must_be_immutable
 class NewMessage extends StatefulWidget {

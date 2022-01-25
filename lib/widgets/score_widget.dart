@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 // ignore: unused_import
 import 'package:polearn/provider/google_sign_in.dart';
 
 // ignore: must_be_immutable
 class ScoreWidget extends StatefulWidget {
-  ScoreWidget({Key? key, required String userid}) : super(key: key) {
+  ScoreWidget({Key? key, required String? userid, required bool isAppBar})
+      : super(key: key) {
     userId = userid;
+    isApp = isAppBar;
   }
-  String userId = "";
-
+  String? userId = "";
+  bool isApp = false;
   @override
   State<ScoreWidget> createState() => _ScoreWidgetState();
 }
@@ -36,12 +39,17 @@ class _ScoreWidgetState extends State<ScoreWidget> {
               curMsgUser?['tech'];
           return SizedBox(
             // color: Colors.amber,
-            height: 70,
+            height: (widget.isApp) ? 55 : 40,
             child: Row(
-              children: [
-                buildProfile(curMsgUser?['photoUrl']),
-                buildScore(totalScore, curMsgUser?['username']),
-              ],
+              children: (!widget.isApp)
+                  ? [
+                      buildProfile(curMsgUser?['photoUrl']),
+                      buildScore(totalScore, curMsgUser?['username']),
+                    ]
+                  : [
+                      buildScore(totalScore, curMsgUser?['username']),
+                      buildProfile(curMsgUser?['photoUrl']),
+                    ],
             ),
           );
         }
@@ -51,11 +59,16 @@ class _ScoreWidgetState extends State<ScoreWidget> {
 
   Widget buildProfile(final userPhoto) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => );
+      },
       child: Container(
-        margin: const EdgeInsets.all(10),
-        width: 45,
-        height: 50,
+        margin: const EdgeInsets.all(4),
+        width: widget.isApp ? 45 : 30,
+        height: widget.isApp ? 50 : 30,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white, width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -69,25 +82,45 @@ class _ScoreWidgetState extends State<ScoreWidget> {
   Widget buildScore(int total, String userName) {
     return Expanded(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment:
+            (widget.isApp) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: (widget.isApp)
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
             children: [
               Container(
-                height: 17,
-                width: 20,
-                margin: const EdgeInsets.all(9),
+                height: (widget.isApp) ? 25 : 15,
+                width: (widget.isApp) ? 27 : 17,
+                margin: const EdgeInsets.all(4),
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/points.png"),
                         fit: BoxFit.fill)),
               ),
-              Text(total.toString()),
+              Text(
+                total.toString(),
+                style: TextStyle(
+                    fontSize: (widget.isApp) ? 14 : 10,
+                    fontFamily: GoogleFonts.openSans().fontFamily,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(253, 197, 71, 1)),
+              ),
             ],
           ),
           Container(
-              margin: const EdgeInsets.only(left: 10), child: Text(userName))
+              margin: const EdgeInsets.only(left: 4),
+              child: Text(userName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.openSans().fontFamily,
+                    fontSize: (widget.isApp) ? 13 : 10,
+                    color: widget.isApp
+                        ? Colors.white
+                        : Color.fromRGBO(103, 134, 250, 1),
+                  )))
         ],
       ),
     );

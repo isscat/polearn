@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:polearn/widgets/chat/messages.dart';
+import 'package:polearn/widgets/chat/messages/messages.dart';
 import 'package:polearn/widgets/chat/new_message.dart';
 import 'package:polearn/widgets/circular_profile.dart';
+import 'package:polearn/widgets/score_widget.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
@@ -22,12 +23,15 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(name),
           toolbarHeight: 70, // Set this height
           flexibleSpace: Container(
               margin: const EdgeInsets.only(top: 25),
               alignment: Alignment.topRight,
-              child: buildProfile(curUser!.photoURL, context))),
+              child: Center(
+                child: ScoreWidget(
+                    userid: FirebaseAuth.instance.currentUser?.uid,
+                    isAppBar: true),
+              ))),
       body: Column(
         children: [
           Expanded(
