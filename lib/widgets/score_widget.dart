@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // ignore: unused_import
 import 'package:polearn/provider/google_sign_in.dart';
+import 'package:polearn/screens/profile_screen.dart';
 
 // ignore: must_be_immutable
 class ScoreWidget extends StatefulWidget {
@@ -18,6 +19,7 @@ class ScoreWidget extends StatefulWidget {
 }
 
 class _ScoreWidgetState extends State<ScoreWidget> {
+  var curMsgUser;
   @override
   Widget build(BuildContext context) {
     int totalScore = 0;
@@ -28,7 +30,7 @@ class _ScoreWidgetState extends State<ScoreWidget> {
           return const Center(child: CircularProgressIndicator());
         } else {
           final chatDocs = snapshot.data?.docs;
-          final curMsgUser = chatDocs?.firstWhere((element) {
+          curMsgUser = chatDocs?.firstWhere((element) {
             return element['uid'] == widget.userId; // current message user
           });
           totalScore = curMsgUser?['gate'] +
@@ -43,39 +45,17 @@ class _ScoreWidgetState extends State<ScoreWidget> {
             child: Row(
               children: (!widget.isApp)
                   ? [
-                      buildProfile(curMsgUser?['photoUrl']),
+                      buildProfile(curMsgUser),
                       buildScore(totalScore, curMsgUser?['username']),
                     ]
                   : [
                       buildScore(totalScore, curMsgUser?['username']),
-                      buildProfile(curMsgUser?['photoUrl']),
+                      buildProfile(curMsgUser),
                     ],
             ),
           );
         }
       },
-    );
-  }
-
-  Widget buildProfile(final userPhoto) {
-    return GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => );
-      },
-      child: Container(
-        margin: const EdgeInsets.all(4),
-        width: widget.isApp ? 45 : 30,
-        height: widget.isApp ? 50 : 30,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 2),
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-          image: DecorationImage(
-              image: NetworkImage(userPhoto.toString()), fit: BoxFit.fill),
-        ),
-      ),
     );
   }
 
@@ -106,7 +86,7 @@ class _ScoreWidgetState extends State<ScoreWidget> {
                     fontSize: (widget.isApp) ? 14 : 10,
                     fontFamily: GoogleFonts.openSans().fontFamily,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(253, 197, 71, 1)),
+                    color: const Color.fromRGBO(253, 197, 71, 1)),
               ),
             ],
           ),
@@ -119,9 +99,31 @@ class _ScoreWidgetState extends State<ScoreWidget> {
                     fontSize: (widget.isApp) ? 13 : 10,
                     color: widget.isApp
                         ? Colors.white
-                        : Color.fromRGBO(103, 134, 250, 1),
+                        : const Color.fromRGBO(103, 134, 250, 1),
                   )))
         ],
+      ),
+    );
+  }
+
+  Widget buildProfile(curMsgUser) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProfileScreen(user: curMsgUser)));
+      },
+      child: Container(
+        margin: const EdgeInsets.all(4),
+        width: widget.isApp ? 45 : 30,
+        height: widget.isApp ? 50 : 30,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 2),
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          image: DecorationImage(
+              image: NetworkImage(curMsgUser?["photoUrl"]), fit: BoxFit.fill),
+        ),
       ),
     );
   }

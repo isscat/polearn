@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:polearn/widgets/chat/messages/messages.dart';
 import 'package:polearn/widgets/chat/new_message.dart';
-import 'package:polearn/widgets/circular_profile.dart';
+import 'dart:math' as math;
 import 'package:polearn/widgets/score_widget.dart';
 
 // ignore: must_be_immutable
@@ -25,6 +25,8 @@ class ChatScreen extends StatelessWidget {
       appBar: AppBar(
           toolbarHeight: 70, // Set this height
           flexibleSpace: Container(
+              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                  .withOpacity(1.0),
               margin: const EdgeInsets.only(top: 25),
               alignment: Alignment.topRight,
               child: Center(

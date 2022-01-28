@@ -50,7 +50,7 @@ class _MessagesState extends State<Messages> {
           return const Center(child: CircularProgressIndicator());
         } else {
           final chatDocs = snapshot.data?.docs;
-          Color myCol = Color.fromRGBO(206, 237, 254, 1);
+          Color myCol = const Color.fromRGBO(206, 237, 254, 1);
           Color senderCol = Colors.white;
           String? curUser = FirebaseAuth.instance.currentUser?.uid;
           return ListView.builder(
@@ -172,7 +172,8 @@ class _MessagesState extends State<Messages> {
     String? curUser,
   ) {
     // print(curMsg?["user"] + "\n" + FirebaseAuth.);
-    var find = null;
+    // ignore: prefer_typing_uninitialized_variables
+    var find;
 
     if (curMsg?["answered_users"].length != 0) {
       find = curMsg?["answered_users"].firstWhere(
@@ -223,8 +224,7 @@ class _MessagesState extends State<Messages> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           String s = "op" + (index + 1).toString();
-          return Container(
-              child: Column(
+          return Column(
             children: [
               Row(
                 children: [
@@ -270,7 +270,7 @@ class _MessagesState extends State<Messages> {
                 height: 1,
               ),
             ],
-          ));
+          );
         },
         itemCount: 4,
       ),
@@ -281,7 +281,7 @@ class _MessagesState extends State<Messages> {
       QueryDocumentSnapshot<Object?>? curMsg, String s, int flag, int total) {
     Color? myCol;
     if (flag == 1) myCol = Colors.green;
-    if (flag == 2) myCol = Color.fromRGBO(246, 119, 119, 1);
+    if (flag == 2) myCol = const Color.fromRGBO(246, 119, 119, 1);
     if (flag == 3) myCol = Colors.blue;
     return Column(
       children: [
@@ -290,7 +290,7 @@ class _MessagesState extends State<Messages> {
             ((curMsg?[s + "Count"] / total * 100).ceil()).toString() + "%",
             style: TextStyle(color: myCol, fontSize: 10),
           ),
-          SizedBox(
+          const SizedBox(
             width: 12,
           ),
           Text(
@@ -314,7 +314,7 @@ class _MessagesState extends State<Messages> {
                     size: 20,
                     color: myCol,
                   ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             LinearPercentIndicator(

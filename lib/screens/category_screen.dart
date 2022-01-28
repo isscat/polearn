@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:polearn/widgets/category_container.dart';
-import 'package:polearn/widgets/circular_profile.dart';
+
 import 'package:polearn/widgets/score_widget.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 70, // Set this height
