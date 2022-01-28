@@ -19,6 +19,7 @@ class ScoreWidget extends StatefulWidget {
 }
 
 class _ScoreWidgetState extends State<ScoreWidget> {
+  // ignore: prefer_typing_uninitialized_variables
   var curMsgUser;
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,10 @@ class _ScoreWidgetState extends State<ScoreWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProfileScreen(user: curMsgUser)));
+                builder: (context) => ProfileScreen(
+                      user: curMsgUser,
+                      color: Colors.blue,
+                    )));
       },
       child: Container(
         margin: const EdgeInsets.all(4),

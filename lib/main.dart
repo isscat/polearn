@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/intl.dart';
 import 'package:polearn/provider/google_sign_in.dart';
 
 import 'package:polearn/screens/home_page.dart';
@@ -18,6 +20,38 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String timeNow = DateFormat.jm().format(DateTime.now());
+    if (timeNow == "11:59 PM") {
+      var highestScoreUser;
+      FirebaseFirestore.instance
+          .collection("user")
+          .orderBy("total", descending: true)
+          .limit(1)
+          .get()
+          .then((value) => {
+                value.docs.forEach((element) {
+                  highestScoreUser = {
+                    "uid": element["uid"],
+                    "username": element["username"],
+                    "score": element["total"],
+                    "photoUrl": element["photoUrl"],
+                    "onDay": DateTime.now()
+                  };
+                  FirebaseFirestore.instance
+                      .collection("winner")
+                      .add(highestScoreUser);
+                  FirebaseFirestore.instance
+                      .collection("user")
+                      .doc(element["uid"])
+                      .update({
+                    "dayWinDates": FieldValue.arrayUnion([
+                      {"day": highestScoreUser["onDay"]}
+                    ]),
+                    "dayWin": FieldValue.increment(1)
+                  });
+                })
+              });
+    }
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(

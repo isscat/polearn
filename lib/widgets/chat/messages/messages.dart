@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:polearn/widgets/chat/messages/poll_form.dart';
-
+import 'package:intl/intl.dart';
 import '../../score_widget.dart';
 
 // ignore: must_be_immutable
@@ -93,11 +93,18 @@ class _MessagesState extends State<Messages> {
                                       fontWeight: FontWeight.w600,
                                     )),
                               ),
-                              // SizedBox(
-                              //   height: 3,
-                              // ),
+
                               buildPoll(chatDocs?[index],
                                   (isMe) ? myCol : senderCol, curUser),
+                              //time
+
+                              Container(
+                                  margin: EdgeInsets.only(left: 180),
+                                  child: Text(
+                                    DateFormat().format(
+                                        chatDocs?[index]["createdAt"].toDate()),
+                                    style: GoogleFonts.roboto(fontSize: 7),
+                                  ))
                             ],
                           ),
                           decoration: BoxDecoration(
@@ -239,6 +246,7 @@ class _MessagesState extends State<Messages> {
                                 .doc(curUser)
                                 .update({
                               chatName: FieldValue.increment(1),
+                              "total": FieldValue.increment(1)
                             });
                           }
                           FirebaseFirestore.instance

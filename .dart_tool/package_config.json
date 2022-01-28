@@ -230,6 +230,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "liquid_progress_indicator",
+      "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/liquid_progress_indicator-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///C:/Users/R&D/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/matcher-0.12.10",
       "packageUri": "lib/",
@@ -410,7 +416,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2022-01-25T05:23:40.813908Z",
+  "generated": "2022-01-28T09:10:07.491128Z",
   "generator": "pub",
   "generatorVersion": "2.14.4"
 }

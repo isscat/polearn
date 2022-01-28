@@ -4,109 +4,162 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:polearn/widgets/profile_screen_widgets/color_container.dart';
+import 'package:polearn/widgets/profile_screen_widgets/image_container.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   var userData;
-  ProfileScreen({Key? key, required QueryDocumentSnapshot<Object?> user})
+
+  ProfileScreen(
+      {Key? key,
+      required QueryDocumentSnapshot<Object?> user,
+      required var color})
       : super(key: key) {
-    // ignore: prefer_initializing_formals
+    // ignore: prefer_initializing_formals, unnecessary_this
+
     this.userData = user;
   }
-
+  var colors = [
+    const Color.fromRGBO(210, 25, 192, 1),
+    const Color.fromRGBO(25, 52, 152, 1),
+    const Color.fromRGBO(246, 119, 119, 1),
+    const Color.fromRGBO(235, 70, 149, 1),
+  ];
   @override
   Widget build(BuildContext context) {
-    var colors = [
-      Color.fromRGBO(19, 33, 158, 1),
-      Color.fromRGBO(210, 25, 192, 1),
-      Color.fromRGBO(26, 155, 183, 1),
-      Color.fromRGBO(246, 119, 119, 1),
-      Color.fromRGBO(235, 70, 149, 1),
-      Color.fromRGBO(50, 82, 136, 1),
-    ];
-    var randIdx = Random().nextInt(6);
-    var userTotalScore = userData?['gate'] +
-        userData?['science'] +
-        userData?['general'] +
-        userData?['lang'] +
-        userData?['neet'] +
-        userData?['tech'];
+    var randIdx = Random().nextInt(colors.length);
     return Scaffold(
-      body: SafeArea(
-          child: Stack(
-        children: [
-          Container(
-            height: 221,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40, left: 26),
-                      child: Text(userData?["username"],
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: GoogleFonts.roboto().fontFamily,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildText("Score"),
-                        buildText(userTotalScore.toString())
-                      ],
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10, top: 43),
-                      child: Text(
-                        "Day Winner",
-                        style: TextStyle(
-                            fontFamily: GoogleFonts.roboto().fontFamily,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10, right: 5),
-                      width: 120,
-                      height: 37,
-                      decoration: BoxDecoration(
-                          color: const Color.fromRGBO(237, 167, 8, 1),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15))),
-                    )
-                  ],
-                )
-              ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Stack(
+          children: [
+            // blue area it contains text
+            ColorContainer(
+              userData: userData,
+              color: colors[randIdx],
             ),
-            decoration: BoxDecoration(
-                color: colors[randIdx],
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15))),
-          ), // blue area it contains text
-        ],
-      )),
+            //photo
+            ImageContainer(
+              photoUrl: userData?["photoUrl"],
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 323),
+                child: Column(
+                  children: [
+                    buildText("Performance", 24, colors[randIdx]),
+                    Container(
+                      height: 320,
+                      child: buildGrid(),
+                    ),
+                    buildText("Day Wins", 24, colors[randIdx]),
+                    buildList(userData?["dayWinDates"]),
+                  ],
+                )),
+          ],
+        ),
+      ),
     );
   }
 
-  buildText(String string) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Text(
-        string,
-        style: TextStyle(
-            fontFamily: GoogleFonts.roboto().fontFamily,
-            fontSize: 18,
-            fontWeight: FontWeight.w100,
-            color: Colors.white),
+  buildText(String s, double i, var col) {
+    return Text(
+      s,
+      style: GoogleFonts.getFont("Roboto",
+          fontSize: i, fontWeight: FontWeight.bold, color: col),
+    );
+  }
+
+  buildGrid() {
+    return GridView(
+      shrinkWrap: true,
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      children: <Widget>[
+        buildCircularProgressBar(
+            "Science", userData?["science"], Random().nextInt(colors.length)),
+        buildCircularProgressBar("General Knowledge", userData?["general"],
+            Random().nextInt(colors.length)),
+        buildCircularProgressBar(
+            "Languages", userData?["lang"], Random().nextInt(colors.length)),
+        buildCircularProgressBar(
+            "Tech Hacks", userData?["tech"], Random().nextInt(colors.length)),
+        buildCircularProgressBar(
+            "GATE", userData?["gate"], Random().nextInt(colors.length)),
+        buildCircularProgressBar(
+            "NEET", userData?["neet"], Random().nextInt(colors.length)),
+      ],
+    );
+  }
+
+  buildCircularProgressBar(String s, int total, int idx) {
+    double percent = (total / userData["total"]) * 100;
+    return Container(
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          boxShadow: const [
+            const BoxShadow(
+              color: Colors.black26,
+              offset: Offset(
+                1.0,
+                14.0,
+              ),
+              blurRadius: 4.0,
+              spreadRadius: 0.0,
+            ),
+          ],
+          border: Border.all(
+            color: colors[idx].withAlpha(80),
+            width: 5,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(70))),
+      // padding: EdgeInsets.all(10),
+      child: LiquidCircularProgressIndicator(
+        value: percent, // Defaults to 0.5.
+        valueColor: AlwaysStoppedAnimation(
+            colors[idx]), // Defaults to the current Theme's accentColor.
+        backgroundColor:
+            Colors.white, // Defaults to the current Theme's backgroundColor.
+        borderColor: Colors.white,
+        borderWidth: 3.0,
+        direction: Axis
+            .vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
+        center: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                s,
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                percent.toString() + "%",
+                style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+    print("Hi");
+  }
+
+  buildList(userDayWins) {
+    return Container(
+      height: 100,
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return Text(DateFormat().format(userDayWins[index].toDate()));
+        },
+        itemCount: userDayWins.length,
       ),
     );
   }

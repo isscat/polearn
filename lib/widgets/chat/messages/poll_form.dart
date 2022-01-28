@@ -132,7 +132,8 @@ class _RoundedAlertBoxState extends State<RoundedAlertBox> {
                         "category": chatName.toLowerCase(),
                         "createdAt": Timestamp.now(),
                         "answered_users": [],
-                        'msgid': documentReference.id
+                        'msgid': documentReference.id,
+                        "total": 0
                       });
                       // documentReference = FirebaseFirestore.instance
                       //     .collection("count_rec")
