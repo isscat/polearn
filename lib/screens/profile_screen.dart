@@ -55,8 +55,8 @@ class ProfileScreen extends StatelessWidget {
                       height: 320,
                       child: buildGrid(),
                     ),
-                    buildText("Day Wins", 24, colors[randIdx]),
-                    buildList(userData?["dayWinDates"]),
+                    buildText("Days Won", 24, colors[randIdx]),
+                    buildList(userData?["dayWinDates"], randIdx),
                   ],
                 )),
           ],
@@ -74,8 +74,10 @@ class ProfileScreen extends StatelessWidget {
   }
 
   buildGrid() {
+    print(userData.data());
     return GridView(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       children: <Widget>[
@@ -96,7 +98,8 @@ class ProfileScreen extends StatelessWidget {
   }
 
   buildCircularProgressBar(String s, int total, int idx) {
-    double percent = (total / userData["total"]) * 100;
+    double percent =
+        (total / ((userData["total"] == 0) ? 1 : userData["total"])) * 100;
     return Container(
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -152,12 +155,31 @@ class ProfileScreen extends StatelessWidget {
     print("Hi");
   }
 
-  buildList(userDayWins) {
+  buildList(userDayWins, int idx) {
     return Container(
-      height: 100,
+      margin: EdgeInsets.all(14),
+      decoration: BoxDecoration(
+          border: Border.all(color: colors[idx].withAlpha(90), width: 2)),
+      height: 200,
       child: ListView.builder(
         itemBuilder: (context, index) {
-          return Text(DateFormat().format(userDayWins[index].toDate()));
+          return Container(
+            margin: EdgeInsets.all(10),
+            width: 200,
+            height: 70,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                border: Border.all(color: colors[idx].withAlpha(85), width: 1)),
+            child: Center(
+              child: Text(
+                DateFormat.yMMMMd().format(userDayWins[index].toDate()),
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         },
         itemCount: userDayWins.length,
       ),

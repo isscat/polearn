@@ -25,27 +25,25 @@ class ColorContainer extends StatelessWidget {
     var dayWinCount = userData?["dayWin"];
     return Container(
       height: 221,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(right: 10, top: 53),
                 child: Text(userData?["username"],
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: GoogleFonts.roboto().fontFamily,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold)),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   buildText("Score"),
                   buildText(userTotalScore.toString())
                 ],
-              )
+              ),
             ],
           ),
           Column(

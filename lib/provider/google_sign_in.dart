@@ -33,6 +33,7 @@ class GoogleSignInProvider extends ChangeNotifier {
           'lang': 0,
           'dayWin': 0,
           'dayWinDates': [],
+          'total': 0,
           'createdAt': Timestamp.now()
         });
       }

@@ -9,9 +9,9 @@ class ImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 145, left: 128),
-      width: 141,
-      height: 139,
+      margin: EdgeInsets.only(top: 100, left: 30),
+      width: 120,
+      height: 120,
       decoration: BoxDecoration(
           // ignore: prefer_const_literals_to_create_immutables
           boxShadow: const [

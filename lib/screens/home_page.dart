@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:polearn/screens/auth_screen.dart';
-import 'package:polearn/widgets/home_screen.dart';
+import 'package:polearn/screens/home_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
