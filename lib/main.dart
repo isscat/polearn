@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:intl/intl.dart';
-import 'package:polearn/provider/google_sign_in.dart';
 
-import 'package:polearn/screens/home_page.dart';
+import 'package:polearn/provider/google_sign_in.dart';
+import 'package:polearn/provider/winner.dart';
+
+import 'package:polearn/widgets/home_page.dart';
 
 import 'package:provider/provider.dart';
 
@@ -20,40 +20,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // String timeNow = DateFormat.jms().format(DateTime.now());
-    // if (timeNow == "1:36:01 PM") {
-    //   var highestScoreUser;
-    //   FirebaseFirestore.instance
-    //       .collection("user")
-    //       .orderBy("total", descending: true)
-    //       .limit(1)
-    //       .get()
-    // .then((value) => {
-    //       value.docs.forEach((element) {
-    //         highestScoreUser = {
-    //           "uid": element["uid"],
-    //           "username": element["username"],
-    //           "score": element["total"],
-    //           "photoUrl": element["photoUrl"],
-    //           "onDay": DateTime.now()
-    //         };
-    //               FirebaseFirestore.instance
-    //                   .collection("winner")
-    //                   .add(highestScoreUser);
-    //               FirebaseFirestore.instance
-    //                   .collection("user")
-    //                   .doc(element["uid"])
-    //                   .update({
-    //                 "dayWinDates": FieldValue.arrayUnion([
-    //                   {"day": highestScoreUser["onDay"]}
-    //                 ]),
-    //                 "dayWin": FieldValue.increment(1)
-    //               });
-    //             })
-    //           });
-    // }
-    return ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GoogleSignInProvider>(
+          create: (_) => GoogleSignInProvider(),
+        ),
+        ChangeNotifierProvider<WinnerProvider>(
+          create: (_) => WinnerProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'PoLearn',
@@ -61,9 +36,14 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blue[900],
           canvasColor: Colors.white,
         ),
-        home: const HomePage(),
+        home: HomePage(),
       ),
     );
+
+    // ChangeNotifierProvider(
+    //   create: (context) => GoogleSignInProvider(),
+
+    // );
   }
 }
 

@@ -3,11 +3,17 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:polearn/provider/google_sign_in.dart';
+import 'package:polearn/widgets/logout.dart';
 import 'package:polearn/widgets/profile_screen_widgets/color_container.dart';
 import 'package:polearn/widgets/profile_screen_widgets/image_container.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets/home_page.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
@@ -21,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
       : super(key: key) {
     // ignore: prefer_initializing_formals, unnecessary_this
 
-    this.userData = user;
+    userData = user;
   }
   var colors = [
     const Color.fromRGBO(210, 25, 192, 1),
@@ -47,16 +53,17 @@ class ProfileScreen extends StatelessWidget {
               photoUrl: userData?["photoUrl"],
             ),
             Container(
-                margin: EdgeInsets.only(top: 323),
+                margin: const EdgeInsets.only(top: 323),
                 child: Column(
                   children: [
                     buildText("Performance", 24, colors[randIdx]),
-                    Container(
+                    SizedBox(
                       height: 320,
                       child: buildGrid(),
                     ),
                     buildText("Days Won", 24, colors[randIdx]),
                     buildList(userData?["dayWinDates"], randIdx),
+                    buildLogout(context)
                   ],
                 )),
           ],
@@ -74,10 +81,9 @@ class ProfileScreen extends StatelessWidget {
   }
 
   buildGrid() {
-    print(userData.data());
     return GridView(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       children: <Widget>[
@@ -101,10 +107,10 @@ class ProfileScreen extends StatelessWidget {
     double percent =
         (total / ((userData["total"] == 0) ? 1 : userData["total"])) * 100;
     return Container(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           boxShadow: const [
-            const BoxShadow(
+            BoxShadow(
               color: Colors.black26,
               offset: Offset(
                 1.0,
@@ -118,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
             color: colors[idx].withAlpha(80),
             width: 5,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(70))),
+          borderRadius: const BorderRadius.all(Radius.circular(70))),
       // padding: EdgeInsets.all(10),
       child: LiquidCircularProgressIndicator(
         value: percent, // Defaults to 0.5.
@@ -152,23 +158,22 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
-    print("Hi");
   }
 
   buildList(userDayWins, int idx) {
     return Container(
-      margin: EdgeInsets.all(14),
+      margin: const EdgeInsets.all(14),
       decoration: BoxDecoration(
           border: Border.all(color: colors[idx].withAlpha(90), width: 2)),
       height: 200,
       child: ListView.builder(
         itemBuilder: (context, index) {
           return Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             width: 200,
             height: 70,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
                 border: Border.all(color: colors[idx].withAlpha(85), width: 1)),
             child: Center(
               child: Text(

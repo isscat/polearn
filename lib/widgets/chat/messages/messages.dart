@@ -98,13 +98,16 @@ class _MessagesState extends State<Messages> {
                                   (isMe) ? myCol : senderCol, curUser),
                               //time
 
-                              Container(
-                                  margin: EdgeInsets.only(left: 180),
-                                  child: Text(
+                              Row(
+                                children: [
+                                  Container(
+                                      child: Text(
                                     DateFormat().format(
                                         chatDocs?[index]["createdAt"].toDate()),
                                     style: GoogleFonts.roboto(fontSize: 7),
-                                  ))
+                                  )),
+                                ],
+                              )
                             ],
                           ),
                           decoration: BoxDecoration(

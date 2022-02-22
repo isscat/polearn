@@ -19,6 +19,7 @@ class GoogleSignInProvider extends ChangeNotifier {
 
       var collectionref = FirebaseFirestore.instance.collection('user');
       var doc = await collectionref.doc(_user?.id.toString()).get();
+
       if (!doc.exists) {
         collectionref.doc(FirebaseAuth.instance.currentUser?.uid).set({
           'uid': FirebaseAuth.instance.currentUser?.uid,

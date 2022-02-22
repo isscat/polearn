@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,12 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 class ColorContainer extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   var userData;
+  // ignore: prefer_typing_uninitialized_variables
   var col;
   ColorContainer({Key? key, required var userData, required color})
       : super(key: key) {
     // ignore: prefer_initializing_formals
     this.userData = userData;
-    this.col = color;
+    col = color;
   }
   @override
   Widget build(BuildContext context) {
@@ -24,59 +23,52 @@ class ColorContainer extends StatelessWidget {
         userData?['tech'];
     var dayWinCount = userData?["dayWin"];
     return Container(
-      height: 221,
+      padding: const EdgeInsets.only(left: 50),
+      height: 230,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
+          Container(
+            margin: const EdgeInsets.only(top: 70),
+            child: Text(userData?["username"],
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: GoogleFonts.roboto().fontFamily,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+          ),
+          Row(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10, top: 53),
-                child: Text(userData?["username"],
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: GoogleFonts.roboto().fontFamily,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Row(
-                children: [
-                  buildText("Score"),
-                  buildText(userTotalScore.toString())
-                ],
-              ),
+              buildText("Score"),
+              buildText("  " + userTotalScore.toString())
             ],
           ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 10, top: 53),
-                child: Text(
-                  "Day Winner",
-                  style: TextStyle(
-                      fontFamily: GoogleFonts.roboto().fontFamily,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
+          Text(
+            "Day Winner",
+            style: TextStyle(
+                fontFamily: GoogleFonts.roboto().fontFamily,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10, right: 5),
+            width: 120,
+            height: 37,
+            child: Center(
+              child: Text(
+                dayWinCount.toString() + " times",
+                style: TextStyle(
+                    fontFamily: GoogleFonts.roboto().fontFamily,
+                    fontSize: 18,
+                    color: Colors.white),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 10, right: 5),
-                width: 120,
-                height: 37,
-                child: Center(
-                  child: Text(
-                    dayWinCount.toString() + " times",
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.roboto().fontFamily,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                ),
-                decoration: const BoxDecoration(
-                    color: Color.fromRGBO(237, 167, 8, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-              )
-            ],
+            ),
+            decoration: const BoxDecoration(
+                color: Color.fromRGBO(237, 167, 8, 1),
+                borderRadius: BorderRadius.all(Radius.circular(15))),
           )
         ],
       ),
@@ -89,16 +81,13 @@ class ColorContainer extends StatelessWidget {
   }
 
   buildText(String string) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Text(
-        string,
-        style: TextStyle(
-            fontFamily: GoogleFonts.roboto().fontFamily,
-            fontSize: 18,
-            fontWeight: FontWeight.w100,
-            color: Colors.white),
-      ),
+    return Text(
+      string,
+      style: TextStyle(
+          fontFamily: GoogleFonts.roboto().fontFamily,
+          fontSize: 18,
+          fontWeight: FontWeight.w100,
+          color: Colors.white),
     );
   }
 }

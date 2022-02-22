@@ -27,34 +27,40 @@ class _ScoreWidgetState extends State<ScoreWidget> {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('user').snapshots(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          final chatDocs = snapshot.data?.docs;
-          curMsgUser = chatDocs?.firstWhere((element) {
-            return element['uid'] == widget.userId; // current message user
-          });
-          totalScore = curMsgUser?['gate'] +
-              curMsgUser?['science'] +
-              curMsgUser?['general'] +
-              curMsgUser?['lang'] +
-              curMsgUser?['neet'] +
-              curMsgUser?['tech'];
-          return SizedBox(
-            // color: Colors.amber,
-            height: (widget.isApp) ? 55 : 40,
-            child: Row(
-              children: (!widget.isApp)
-                  ? [
-                      buildProfile(curMsgUser),
-                      buildScore(totalScore, curMsgUser?['username']),
-                    ]
-                  : [
-                      buildScore(totalScore, curMsgUser?['username']),
-                      buildProfile(curMsgUser),
-                    ],
-            ),
-          );
+        try {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            final chatDocs = snapshot.data?.docs;
+            curMsgUser = chatDocs?.firstWhere((element) {
+              if (element['uid'] != null && element['uid'] == widget.userId)
+                return true;
+              return false; // current message user
+            });
+            totalScore = curMsgUser?['gate'] +
+                curMsgUser?['science'] +
+                curMsgUser?['general'] +
+                curMsgUser?['lang'] +
+                curMsgUser?['neet'] +
+                curMsgUser?['tech'];
+            return SizedBox(
+              // color: Colors.amber,
+              height: (widget.isApp) ? 55 : 40,
+              child: Row(
+                children: (!widget.isApp)
+                    ? [
+                        buildProfile(curMsgUser),
+                        buildScore(totalScore, curMsgUser?['username']),
+                      ]
+                    : [
+                        buildScore(totalScore, curMsgUser?['username']),
+                        buildProfile(curMsgUser),
+                      ],
+              ),
+            );
+          }
+        } catch (Exception) {
+          return const CircularProgressIndicator();
         }
       },
     );

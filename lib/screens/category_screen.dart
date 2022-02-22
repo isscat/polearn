@@ -1,26 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:polearn/widgets/category_container.dart';
-
-import 'package:polearn/widgets/score_widget.dart';
+import 'package:polearn/widgets/profile_appbar.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: AppBar(
-          toolbarHeight: 70, // Set this height
-          flexibleSpace: Container(
-              margin: const EdgeInsets.only(top: 25),
-              alignment: Alignment.topRight,
-              child: Center(
-                child: ScoreWidget(
-                    userid: FirebaseAuth.instance.currentUser?.uid,
-                    isAppBar: true),
-              ))),
+      appBar: profileAppBar(),
       body: CustomScrollView(
         primary: false,
         slivers: <Widget>[
