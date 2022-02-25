@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class WinnerProvider extends ChangeNotifier {
   bool isWinnerSet = false;
+  // ignore: prefer_typing_uninitialized_variables
   var winner;
   Future setWinner() async {
     try {
@@ -13,7 +14,7 @@ class WinnerProvider extends ChangeNotifier {
           .limit(1)
           .get()
           .then((element) {
-        element.docs.forEach((element) {
+        for (var element in element.docs) {
           winner = {
             "username": element["username"],
             "score": element["total"],
@@ -27,8 +28,9 @@ class WinnerProvider extends ChangeNotifier {
             "dayWin": FieldValue.increment(1)
           });
           isWinnerSet = true;
-        });
+        }
       });
+      // ignore: empty_catches
     } catch (e) {}
     // notifyListeners();
   }

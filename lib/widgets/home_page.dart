@@ -48,8 +48,10 @@ class HomePage extends StatelessWidget {
                         else
                           return HomeScreen();
                       }
-                    } catch (e) {}
-                    return AuthScreen();
+                    } catch (e) {
+                      print(e);
+                    }
+                    return HomeScreen();
                   }),
             );
           }

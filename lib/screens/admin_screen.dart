@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:polearn/widgets/admin_screen_widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:polearn/widgets/logout.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -9,7 +10,13 @@ class AdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-      children: [buildAdminProfile(), buildLogout(context)],
+      children: [
+        Text(
+          "Admin Screen Here!",
+          style: TextStyle(fontFamily: GoogleFonts.roboto().fontFamily),
+        ),
+        buildLogout(context)
+      ],
     ));
   }
 }
