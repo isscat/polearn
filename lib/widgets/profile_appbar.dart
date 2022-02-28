@@ -4,7 +4,7 @@ import 'package:polearn/widgets/score_widget.dart';
 
 PreferredSize profileAppBar() {
   return PreferredSize(
-    preferredSize: Size(70, 70),
+    preferredSize: const Size(70, 70),
     child: AppBar(
         title: const Text("PoLearn"),
         toolbarHeight: 70, // Set this height

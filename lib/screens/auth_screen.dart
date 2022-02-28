@@ -88,19 +88,17 @@ class _AuthScreenState extends State<AuthScreen> {
           ColorizeAnimatedText('PoLearn',
               textStyle: colorizeTextStyle,
               colors: colorizeColors,
-              speed: Duration(milliseconds: 500)),
+              speed: const Duration(milliseconds: 500)),
         ],
         repeatForever: true,
         isRepeatingAnimation: true,
-        onTap: () {
-          print("Tap Event");
-        },
+        onTap: () {},
       ),
     );
   }
 
   buildText() {
-    var first = TextStyle(
+    var first = const TextStyle(
       color: Colors.lime,
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
@@ -110,7 +108,7 @@ class _AuthScreenState extends State<AuthScreen> {
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
     );
-    return Container(
+    return SizedBox(
       height: 100,
       child: Center(
         child: SizedBox(
@@ -124,7 +122,7 @@ class _AuthScreenState extends State<AuthScreen> {
             child: AnimatedTextKit(
               animatedTexts: [
                 FadeAnimatedText('Learn as You Go!',
-                    duration: Duration(milliseconds: 2000),
+                    duration: const Duration(milliseconds: 2000),
                     textStyle: first,
                     textAlign: TextAlign.center),
                 FadeAnimatedText('Compete and Win!!',
@@ -133,7 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     textAlign: TextAlign.center),
               ],
               onTap: () {
-                print("Tap Event");
+                // print("Tap Event");
               },
             ),
           ),

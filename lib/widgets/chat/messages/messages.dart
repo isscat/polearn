@@ -100,12 +100,11 @@ class _MessagesState extends State<Messages> {
 
                               Row(
                                 children: [
-                                  Container(
-                                      child: Text(
+                                  Text(
                                     DateFormat().format(
                                         chatDocs?[index]["createdAt"].toDate()),
                                     style: GoogleFonts.roboto(fontSize: 7),
-                                  )),
+                                  ),
                                 ],
                               )
                             ],

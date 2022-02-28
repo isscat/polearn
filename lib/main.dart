@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:polearn/provider/google_sign_in.dart';
 import 'package:polearn/provider/winner.dart';
-
 import 'package:polearn/widgets/home_page.dart';
-
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -36,7 +33,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blue[900],
           canvasColor: Colors.white,
         ),
-        home: HomePage(),
+        home: const HomePage(),
       ),
     );
 

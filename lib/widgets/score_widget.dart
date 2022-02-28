@@ -33,8 +33,9 @@ class _ScoreWidgetState extends State<ScoreWidget> {
           } else {
             final chatDocs = snapshot.data?.docs;
             curMsgUser = chatDocs?.firstWhere((element) {
-              if (element['uid'] != null && element['uid'] == widget.userId)
+              if (element['uid'] != null && element['uid'] == widget.userId) {
                 return true;
+              }
               return false; // current message user
             });
             totalScore = curMsgUser?['gate'] +
@@ -59,7 +60,7 @@ class _ScoreWidgetState extends State<ScoreWidget> {
               ),
             );
           }
-        } catch (Exception) {
+        } on Exception {
           return const CircularProgressIndicator();
         }
       },

@@ -6,7 +6,7 @@ import 'package:polearn/screens/auth_screen.dart';
 import 'package:polearn/screens/home_screen.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +38,23 @@ class HomePage extends StatelessWidget {
                         var admin = chatDocs?.firstWhere((element) {
                           if (element['uid'] != null &&
                               element['uid'] ==
-                                  FirebaseAuth.instance.currentUser?.uid)
+                                  FirebaseAuth.instance.currentUser?.uid) {
                             return true;
+                          }
                           return false; // current message user
                         });
                         if (admin?["uid"] ==
-                            FirebaseAuth.instance.currentUser?.uid)
-                          return AdminScreen();
-                        else
-                          return HomeScreen();
+                            FirebaseAuth.instance.currentUser?.uid) {
+                          return const AdminScreen();
+                        } else {
+                          return const HomeScreen();
+                        }
                       }
                     } catch (e) {
+                      // ignore: avoid_print
                       print(e);
                     }
-                    return HomeScreen();
+                    return const HomeScreen();
                   }),
             );
           }

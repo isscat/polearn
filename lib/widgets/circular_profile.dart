@@ -11,7 +11,7 @@ Widget buildProfile(final user, BuildContext context) {
           Provider.of<GoogleSignInProvider>(context, listen: false);
       provider.logout();
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
           (Route<dynamic> route) => false);
     },
     child: Container(
