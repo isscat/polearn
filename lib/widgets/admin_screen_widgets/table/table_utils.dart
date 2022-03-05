@@ -21,8 +21,6 @@ Widget buildTableHeadings({
             color: textColor, data: dataList[1], fontSize: 10, isScore: false),
         buildText(
             color: textColor, data: dataList[2], fontSize: 10, isScore: false),
-        buildText(
-            color: textColor, data: dataList[3], fontSize: 10, isScore: false),
       ],
     ),
   );
@@ -35,7 +33,7 @@ buildText({
   isScore,
 }) {
   return SizedBox(
-    width: (isScore) ? 20 : 80,
+    width: (isScore) ? 50 : 80,
     child: Text(
       data,
       style: GoogleFonts.roboto(color: color, fontSize: fontSize),

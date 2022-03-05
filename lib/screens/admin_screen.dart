@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:polearn/widgets/admin_screen_widgets/admin_profile.dart';
 import 'package:polearn/widgets/admin_screen_widgets/admin_screen_widgets.dart';
+import 'package:polearn/widgets/admin_screen_widgets/bar_chart_widgets/bar_chart.dart';
+
 import 'package:polearn/widgets/admin_screen_widgets/table/table.dart';
 
 import 'package:polearn/widgets/logout.dart';
@@ -31,6 +33,7 @@ class AdminScreen extends StatelessWidget {
                   buildAdminText(),
                   AdminProfile(adminDet: adminData),
                   const TableList(),
+                  const BarChart(),
                   buildLogout(context)
                 ],
               ),

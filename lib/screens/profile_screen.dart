@@ -14,20 +14,14 @@ class ProfileScreen extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   var userData;
 
-  ProfileScreen(
-      {Key? key,
-      required QueryDocumentSnapshot<Object?> user,
-      required var color})
+  ProfileScreen({Key? key, required DocumentSnapshot<Object?>? user, var color})
       : super(key: key) {
     // ignore: prefer_initializing_formals, unnecessary_this
 
     userData = user;
   }
   var colors = [
-    const Color.fromRGBO(210, 25, 192, 1),
     const Color.fromRGBO(25, 52, 152, 1),
-    const Color.fromRGBO(246, 119, 119, 1),
-    const Color.fromRGBO(235, 70, 149, 1),
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,8 +37,13 @@ class ProfileScreen extends StatelessWidget {
               color: colors[randIdx],
             ),
             //photo
-            ImageContainer(
-              photoUrl: userData?["photoUrl"],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ImageContainer(
+                  photoUrl: userData?["photoUrl"],
+                ),
+              ],
             ),
             Container(
                 margin: const EdgeInsets.only(top: 323),
@@ -55,8 +54,8 @@ class ProfileScreen extends StatelessWidget {
                       height: 320,
                       child: buildGrid(),
                     ),
-                    buildText("Days Won", 24, colors[randIdx]),
-                    buildList(userData?["dayWinDates"], randIdx),
+                    // buildText("Days Won", 24, colors[randIdx]),
+                    // buildList(userData?["dayWinDates"], randIdx),
                     buildLogout(context)
                   ],
                 )),
@@ -154,34 +153,34 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  buildList(userDayWins, int idx) {
-    return Container(
-      margin: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-          border: Border.all(color: colors[idx].withAlpha(90), width: 2)),
-      height: 200,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.all(10),
-            width: 200,
-            height: 70,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                border: Border.all(color: colors[idx].withAlpha(85), width: 1)),
-            child: Center(
-              child: Text(
-                DateFormat.yMMMMd().format(userDayWins[index].toDate()),
-                style: GoogleFonts.roboto(
-                  fontSize: 18,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        },
-        itemCount: userDayWins.length,
-      ),
-    );
-  }
+  // buildList(userDayWins, int idx) {
+  //   return Container(
+  //     margin: const EdgeInsets.all(14),
+  //     decoration: BoxDecoration(
+  //         border: Border.all(color: colors[idx].withAlpha(90), width: 2)),
+  //     height: 200,
+  //     child: ListView.builder(
+  //       itemBuilder: (context, index) {
+  //         return Container(
+  //           margin: const EdgeInsets.all(10),
+  //           width: 200,
+  //           height: 70,
+  //           decoration: BoxDecoration(
+  //               borderRadius: const BorderRadius.all(Radius.circular(15)),
+  //               border: Border.all(color: colors[idx].withAlpha(85), width: 1)),
+  //           child: Center(
+  //             child: Text(
+  //               DateFormat.yMMMMd().format(userDayWins[index].toDate()),
+  //               style: GoogleFonts.roboto(
+  //                 fontSize: 18,
+  //               ),
+  //               textAlign: TextAlign.center,
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //       itemCount: userDayWins.length,
+  //     ),
+  //   );
+  // }
 }

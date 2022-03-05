@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:polearn/screens/profile_screen.dart';
 import 'package:polearn/widgets/admin_screen_widgets/styling_utils.dart';
 import 'package:polearn/widgets/admin_screen_widgets/table/table_utils.dart';
+
+var ctx;
 
 class TableList extends StatelessWidget {
   const TableList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ctx = context;
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -29,12 +33,7 @@ class TableList extends StatelessWidget {
               children: [
                 //heading
                 buildTableHeadings(
-                    dataList: [
-                      "SUBJECT",
-                      "TOTAL QUESTIONS",
-                      "ANSWERED",
-                      "TOP SCORER"
-                    ],
+                    dataList: ["SUBJECT", "TOTAL QUESTIONS", "TOP SCORER"],
                     context: context,
                     textColor: Colors.black54,
                     containerColor: const Color.fromARGB(1, 250, 252, 255)),
@@ -103,17 +102,28 @@ class TableList extends StatelessWidget {
             fontSize: 12.0,
             isScore: true,
           ),
-          buildText(
-            color: const Color.fromRGBO(102, 190, 159, 100),
-            data: progressDetail?["answered"].toString(),
-            fontSize: 12.0,
-            isScore: true,
+          GestureDetector(
+            onTap: () {
+              if (progressDetail?["topscorer"] != "Not Yet") {
+                FirebaseFirestore.instance
+                    .collection("user")
+                    .doc(progressDetail?["topScoreUid"])
+                    .get()
+                    .then((snapshot) {
+                  Navigator.push(
+                      ctx,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(user: snapshot),
+                      ));
+                });
+              }
+            },
+            child: buildText(
+                color: Colors.black54,
+                data: progressDetail?["topscorer"],
+                fontSize: 12.0,
+                isScore: false),
           ),
-          buildText(
-              color: Colors.black54,
-              data: progressDetail?["topscorer"],
-              fontSize: 12.0,
-              isScore: false),
         ],
       ),
     );
