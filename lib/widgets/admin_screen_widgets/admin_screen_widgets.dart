@@ -7,11 +7,8 @@ Widget buildAdminText() {
     child: Text(
       "Hello Admin!",
       style: GoogleFonts.roboto(
-        shadows: [
-          const Shadow(color: Colors.black12, offset: Offset(0, 3), blurRadius: 4)
-        ],
         fontSize: 24,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.bold,
         color: const Color.fromRGBO(141, 127, 127, 100),
       ),
     ),

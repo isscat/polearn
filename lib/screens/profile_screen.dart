@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:polearn/widgets/logout.dart';
 import 'package:polearn/widgets/profile_screen_widgets/color_container.dart';

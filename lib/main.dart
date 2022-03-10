@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:polearn/provider/admin.dart';
 import 'package:polearn/provider/google_sign_in.dart';
-import 'package:polearn/provider/winner.dart';
+
 import 'package:polearn/widgets/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<GoogleSignInProvider>(
           create: (_) => GoogleSignInProvider(),
         ),
-        ChangeNotifierProvider<WinnerProvider>(
-          create: (_) => WinnerProvider(),
+        ChangeNotifierProvider<Admin>(
+          create: (_) => Admin(),
         ),
       ],
       child: MaterialApp(

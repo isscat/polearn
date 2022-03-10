@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:polearn/provider/admin.dart';
 import 'package:polearn/screens/profile_screen.dart';
 import 'package:polearn/widgets/admin_screen_widgets/styling_utils.dart';
 import 'package:polearn/widgets/admin_screen_widgets/table/table_utils.dart';
+import 'package:provider/provider.dart';
 
 var ctx;
 
@@ -60,7 +62,8 @@ class TableList extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var progressDetails = snapshot.data;
-
+            Provider.of<Admin>(context, listen: false)
+                .setProgressDetails(progDet: progressDetails);
             return SizedBox(
               height: 250,
               child: Column(

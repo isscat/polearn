@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:polearn/screens/category_screen.dart';
 
 import 'package:polearn/widgets/admin_screen_widgets/admin_profile.dart';
 import 'package:polearn/widgets/admin_screen_widgets/admin_screen_widgets.dart';
@@ -30,11 +31,17 @@ class AdminScreen extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(5, 50, 5, 0),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      buildLogout(context),
+                    ],
+                  ),
                   buildAdminText(),
                   AdminProfile(adminDet: adminData),
                   const TableList(),
                   const BarChart(),
-                  buildLogout(context)
+                  buildCategoryButton()
                 ],
               ),
             ),
@@ -43,5 +50,24 @@ class AdminScreen extends StatelessWidget {
         return const CircularProgressIndicator();
       },
     ));
+  }
+
+  buildCategoryButton() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+                ctx,
+                MaterialPageRoute(
+                  builder: (context) => const CategoryScreen(),
+                ));
+          },
+          child: Container(
+              color: Colors.blue,
+              child: const Text("Explore",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)))),
+    );
   }
 }

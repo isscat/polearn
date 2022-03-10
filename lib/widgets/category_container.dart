@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:polearn/provider/admin.dart';
 import 'package:polearn/screens/chat_screen.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CategoryContainer extends StatelessWidget {
   String containerName = "", imageName = "", chatName = "";
-  CategoryContainer(
-      {Key? key, String name = "", String assetName = "", String chat = ""})
-      : super(key: key) {
+
+  CategoryContainer({
+    Key? key,
+    String name = "",
+    String assetName = "",
+    String chat = "",
+  }) : super(key: key) {
     containerName = name;
     imageName = assetName;
     chatName = chat;
   }
   @override
   Widget build(BuildContext context) {
+    bool isAdmin = Provider.of<Admin>(context, listen: false).isAdmin;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -55,10 +62,21 @@ class CategoryContainer extends StatelessWidget {
                 style: GoogleFonts.openSans(
                     color: const Color.fromRGBO(25, 52, 152, 1),
                     fontWeight: FontWeight.bold,
-                    fontSize: 20.0))
+                    fontSize: 20.0)),
+            if (isAdmin) buildTotalQuestionsText(context)
           ],
         ),
       ),
     );
+  }
+
+  buildTotalQuestionsText(context) {
+    var score = Provider.of<Admin>(context, listen: false)
+        .progressDetails?[chatName]["total"];
+    return Text("total: " + score.toString(),
+        style: GoogleFonts.openSans(
+            color: const Color.fromRGBO(25, 52, 152, 1),
+            fontWeight: FontWeight.bold,
+            fontSize: 9.0));
   }
 }

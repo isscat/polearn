@@ -5,17 +5,21 @@ import 'package:provider/provider.dart';
 
 Widget buildLogout(BuildContext context) {
   final ButtonStyle style = ElevatedButton.styleFrom(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15),
       primary: Colors.white,
       textStyle: const TextStyle(fontSize: 25));
   return Container(
       alignment: Alignment.bottomCenter,
-      margin: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 120.0),
-      child: ElevatedButton(
+      margin: const EdgeInsets.fromLTRB(0.0, 0, 5, 10.0),
+      child: ElevatedButton.icon(
         style: style,
-        child: const Text(
-          'Logout',
-          style: TextStyle(color: Colors.red),
+        label: Text(
+          "logout",
+          style: TextStyle(fontSize: 10, color: Colors.red[400]),
+        ),
+        icon: const Icon(
+          Icons.logout,
+          color: Colors.black54,
         ),
         onPressed: () {
           final provider =
