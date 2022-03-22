@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:polearn/provider/admin.dart';
@@ -20,7 +21,8 @@ class CategoryContainer extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    bool isAdmin = Provider.of<Admin>(context, listen: false).isAdmin;
+    bool isAdmin = Provider.of<Admin>(context, listen: false).adminId ==
+        FirebaseAuth.instance.currentUser?.uid;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -71,7 +73,7 @@ class CategoryContainer extends StatelessWidget {
   }
 
   buildTotalQuestionsText(context) {
-    var score = Provider.of<Admin>(context, listen: false)
+    var score = Provider.of<Admin>(context, listen: true)
         .progressDetails?[chatName]["total"];
     return Text("total: " + score.toString(),
         style: GoogleFonts.openSans(

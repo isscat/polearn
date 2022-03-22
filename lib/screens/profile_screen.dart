@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,10 +22,13 @@ class ProfileScreen extends StatelessWidget {
   }
   var colors = [
     const Color.fromRGBO(25, 52, 152, 1),
+    Colors.red,
+    Colors.pink,
+    Colors.amber,
+    Colors.green
   ];
   @override
   Widget build(BuildContext context) {
-    var randIdx = Random().nextInt(colors.length);
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -34,22 +37,25 @@ class ProfileScreen extends StatelessWidget {
             // blue area it contains text
             ColorContainer(
               userData: userData,
-              color: colors[randIdx],
+              color: colors[0],
             ),
             //photo
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ImageContainer(
-                  photoUrl: userData?["photoUrl"],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(top: 70, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ImageContainer(
+                    photoUrl: userData?["photoUrl"],
+                  ),
+                ],
+              ),
             ),
             Container(
                 margin: const EdgeInsets.only(top: 323),
                 child: Column(
                   children: [
-                    buildText("Performance", 24, colors[randIdx]),
+                    buildText("Performance", 24, colors[0]),
                     SizedBox(
                       height: 320,
                       child: buildGrid(),

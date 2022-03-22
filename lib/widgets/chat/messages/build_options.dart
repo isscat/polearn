@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 enum Option { op1, op2, op3, op4 }
@@ -40,7 +42,7 @@ class _BuildOptionsState extends State<BuildOptions> {
           ],
         ),
       ],
-    );
+    );  
   }
 
   Widget buildTextField(String? text, int optNo) {
@@ -48,8 +50,10 @@ class _BuildOptionsState extends State<BuildOptions> {
         child: Padding(
       padding: const EdgeInsets.only(right: 30.0),
       child: TextField(
+        
         style: const TextStyle(fontSize: 12),
         onChanged: (value) {
+          
           switch (optNo) {
             case 1:
               msg["op1"] = value;
@@ -65,10 +69,15 @@ class _BuildOptionsState extends State<BuildOptions> {
               break;
           }
         },
+      
+      
         decoration: InputDecoration(
           hintText: text,
+         
         ),
         maxLines: 1,
+      
+      
       ),
     ));
   }
@@ -99,4 +108,5 @@ class _BuildOptionsState extends State<BuildOptions> {
           });
         });
   }
+  
 }

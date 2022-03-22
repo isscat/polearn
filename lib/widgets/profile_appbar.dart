@@ -13,6 +13,7 @@ PreferredSize profileAppBar() {
             alignment: Alignment.topRight,
             child: Center(
               child: ScoreWidget(
+                  msgDelFunc: null,
                   userid: FirebaseAuth.instance.currentUser?.uid,
                   isAppBar: true),
             ))),

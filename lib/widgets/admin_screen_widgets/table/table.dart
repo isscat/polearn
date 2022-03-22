@@ -7,6 +7,7 @@ import 'package:polearn/widgets/admin_screen_widgets/styling_utils.dart';
 import 'package:polearn/widgets/admin_screen_widgets/table/table_utils.dart';
 import 'package:provider/provider.dart';
 
+// ignore: prefer_typing_uninitialized_variables
 var ctx;
 
 class TableList extends StatelessWidget {

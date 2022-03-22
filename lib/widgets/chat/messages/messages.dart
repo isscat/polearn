@@ -5,8 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import 'package:polearn/widgets/chat/messages/poll_form.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../provider/admin.dart';
 import '../../score_widget.dart';
 
 // ignore: must_be_immutable
@@ -50,6 +54,7 @@ class _MessagesState extends State<Messages> {
           return const Center(child: CircularProgressIndicator());
         } else {
           final chatDocs = snapshot.data?.docs;
+
           Color myCol = const Color.fromRGBO(206, 237, 254, 1);
           Color senderCol = Colors.white;
           String? curUser = FirebaseAuth.instance.currentUser?.uid;
@@ -83,6 +88,9 @@ class _MessagesState extends State<Messages> {
                               ScoreWidget(
                                 userid: chatDocs?[index]['user'],
                                 isAppBar: false,
+                                msgDelFunc: () {
+                                  deleteMessage(chatDocs?[index]["msgid"]);
+                                },
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8),
@@ -99,6 +107,9 @@ class _MessagesState extends State<Messages> {
                               //time
 
                               Row(
+                                mainAxisAlignment: (isMe)
+                                    ? MainAxisAlignment.start
+                                    : MainAxisAlignment.end,
                                 children: [
                                   Text(
                                     DateFormat().format(
@@ -172,6 +183,66 @@ class _MessagesState extends State<Messages> {
               });
         }
       },
+    );
+  }
+
+  void deleteMessage(msgid) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return Center(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              height: 100,
+              width: 250,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Would you like to delete?"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildTextGesture("Yes", () {
+                        FirebaseFirestore.instance
+                            .collection(chatName)
+                            .doc(msgid)
+                            .delete();
+                        FirebaseFirestore.instance
+                            .collection("progress")
+                            .doc("score")
+                            .update(
+                                {'$chatName.total': FieldValue.increment(-1)});
+                        Provider.of<Admin>(context, listen: false)
+                            .getProgressDetails();
+                        Navigator.of(context, rootNavigator: true).pop();
+                      }),
+                      buildTextGesture("No", () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      })
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  buildTextGesture(str, func) {
+    return GestureDetector(
+      onTap: func,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 30,
+          width: 50,
+          child: Center(child: Text(str)),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.orange, width: 1)),
+        ),
+      ),
     );
   }
 

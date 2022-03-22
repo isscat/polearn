@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:polearn/widgets/chat/messages/messages.dart';
 import 'package:polearn/widgets/chat/new_message.dart';
 
@@ -23,12 +25,14 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          title: Text(name),
           toolbarHeight: 70, // Set this height
           flexibleSpace: Container(
               margin: const EdgeInsets.only(top: 25),
               alignment: Alignment.topRight,
               child: Center(
                 child: ScoreWidget(
+                    msgDelFunc: null,
                     userid: FirebaseAuth.instance.currentUser?.uid,
                     isAppBar: true),
               ))),
