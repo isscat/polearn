@@ -42,6 +42,8 @@ class _MessagesState extends State<Messages> {
     super.dispose();
   }
 
+  // ignore: prefer_typing_uninitialized_variables
+  var messageMargin;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -55,7 +57,8 @@ class _MessagesState extends State<Messages> {
         } else {
           final chatDocs = snapshot.data?.docs;
 
-          Color myCol = const Color.fromRGBO(206, 237, 254, 1);
+          Color myCol = Colors.pink[50]!;
+          //const Color.fromRGBO(206, 237, 254, 1);
           Color senderCol = Colors.white;
           String? curUser = FirebaseAuth.instance.currentUser?.uid;
           return ListView.builder(
@@ -74,7 +77,7 @@ class _MessagesState extends State<Messages> {
                           : MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: 326,
+                          height: 360,
                           width: 320,
                           margin: isMe
                               ? const EdgeInsets.only(
@@ -89,7 +92,8 @@ class _MessagesState extends State<Messages> {
                                 userid: chatDocs?[index]['user'],
                                 isAppBar: false,
                                 msgDelFunc: () {
-                                  deleteMessage(chatDocs?[index]["msgid"]);
+                                  deleteMessage(
+                                      chatDocs?[index]["msgid"], context);
                                 },
                               ),
                               Padding(
@@ -186,7 +190,218 @@ class _MessagesState extends State<Messages> {
     );
   }
 
-  void deleteMessage(msgid) {
+  Widget buildPoll(
+    QueryDocumentSnapshot<Object?>? curMsg,
+    Color clr,
+    String? curUser,
+  ) {
+    int total = curMsg?["op1Count"] +
+        curMsg?["op2Count"] +
+        curMsg?["op3Count"] +
+        curMsg?["op4Count"];
+    // ignore: prefer_typing_uninitialized_variables
+    var find;
+
+    if (curMsg?["answered_users"].length != 0) {
+      find = curMsg?["answered_users"].firstWhere(
+          (element) =>
+              (element?["user"] == FirebaseAuth.instance.currentUser?.uid),
+          orElse: () => null);
+    }
+    if (find != null) {
+      return SizedBox(
+        height: 250,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 225,
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  String s = "op" + (index + 1).toString();
+                  int flag = 2;
+                  // ignore: curly_braces_in_flow_control_structures
+                  if ((find["answered_opt"] == s)) if (find["answered_opt"] ==
+                      curMsg?["ans"]) {
+                    flag = 1;
+                  } else {
+                    flag = 3;
+                  }
+                  else {
+                    flag = 2;
+                  }
+
+                  return SizedBox(
+                    height: 56,
+                    child: Column(
+                      children: [
+                        buildColumn(curMsg, s, flag, total),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: 4,
+              ),
+            ),
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(total.toString() + " Views"))
+          ],
+        ),
+      );
+    }
+    // answering for the first time
+    return SizedBox(
+      height: 250,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 225,
+            child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                String s = "op" + (index + 1).toString();
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              if (curMsg?["user"] !=
+                                  FirebaseAuth.instance.currentUser?.uid) {
+                                if (s == curMsg?["ans"]) {
+                                  _controllerCenter.play();
+                                  FirebaseFirestore.instance
+                                      .collection("user")
+                                      .doc(curUser)
+                                      .update({
+                                    chatName: FieldValue.increment(1),
+                                    "total": FieldValue.increment(1)
+                                  });
+                                  updateWinnerInProgress(chatName);
+                                }
+                                FirebaseFirestore.instance
+                                    .collection(widget.chatName)
+                                    .doc(curMsg?["msgid"])
+                                    .update({
+                                  s + "Count": FieldValue.increment(1),
+                                  'answered_users': FieldValue.arrayUnion([
+                                    {"user": curUser, "answered_opt": s}
+                                  ])
+                                });
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.radio_button_off,
+                              color: Colors.black,
+                            )),
+                        Expanded(
+                          child: Text(
+                            curMsg?[s],
+                            maxLines: 3,
+                            textAlign: TextAlign.left,
+                          ),
+                        )
+                      ],
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      height: 1,
+                    ),
+                  ],
+                );
+              },
+              itemCount: 4,
+            ),
+          ),
+          Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(total.toString() + " Views"))
+        ],
+      ),
+    );
+  }
+
+  Widget buildColumn(
+      QueryDocumentSnapshot<Object?>? curMsg, String s, int flag, int total) {
+    Color? myCol;
+    if (flag == 1) myCol = Colors.green;
+    if (flag == 2) myCol = const Color.fromRGBO(246, 119, 119, 1);
+    if (flag == 3) myCol = Colors.blue;
+
+    return Column(
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Text(
+            ((curMsg?[s + "Count"] / total * 100).ceil()).toString() + "%",
+            style: TextStyle(color: myCol, fontSize: 10),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+          Text(
+            curMsg?[s],
+            style: TextStyle(
+                fontFamily: GoogleFonts.openSans().fontFamily,
+                fontWeight: FontWeight.w500),
+          ),
+        ]),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            (flag == 1)
+                ? Icon(
+                    Icons.check_circle,
+                    color: myCol,
+                    size: 20,
+                  )
+                : Icon(
+                    Icons.cancel,
+                    size: 20,
+                    color: myCol,
+                  ),
+            const SizedBox(
+              width: 10,
+            ),
+            LinearPercentIndicator(
+              width: 220.0,
+              lineHeight: 8.0,
+              percent: curMsg?[s + "Count"] / total,
+              progressColor: myCol,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void updateWinnerInProgress(String chatName) {
+    StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("user")
+            .orderBy("total", descending: true)
+            .limit(1)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var chatDocs = snapshot.data?.docs;
+            var len = chatDocs?.length;
+            if (len! > 0) {
+              FirebaseFirestore.instance
+                  .collection("progress")
+                  .doc("score")
+                  .update({
+                '$chatName.topscorer': chatDocs?[0]["username"],
+                '$chatName.topScoreUid': chatDocs?[0]['uid']
+              });
+            }
+          }
+          return const CircularProgressIndicator();
+        });
+  }
+
+//mutual purpose
+  void deleteMessage(msgid, context) {
     showDialog(
         context: context,
         builder: (ctx) {
@@ -243,170 +458,6 @@ class _MessagesState extends State<Messages> {
               BoxDecoration(border: Border.all(color: Colors.orange, width: 1)),
         ),
       ),
-    );
-  }
-
-  Widget buildPoll(
-    QueryDocumentSnapshot<Object?>? curMsg,
-    Color clr,
-    String? curUser,
-  ) {
-    // print(curMsg?["user"] + "\n" + FirebaseAuth.);
-    // ignore: prefer_typing_uninitialized_variables
-    var find;
-
-    if (curMsg?["answered_users"].length != 0) {
-      find = curMsg?["answered_users"].firstWhere(
-          (element) =>
-              (element?["user"] == FirebaseAuth.instance.currentUser?.uid),
-          orElse: () => null);
-    }
-    if (find != null) {
-      int total = curMsg?["op1Count"] +
-          curMsg?["op2Count"] +
-          curMsg?["op3Count"] +
-          curMsg?["op4Count"];
-      return SizedBox(
-        height: 225,
-        child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            String s = "op" + (index + 1).toString();
-            int flag = 2;
-            // ignore: curly_braces_in_flow_control_structures
-            if ((find["answered_opt"] == s)) if (find["answered_opt"] ==
-                curMsg?["ans"]) {
-              flag = 1;
-            } else {
-              flag = 3;
-            }
-            else {
-              flag = 2;
-            }
-
-            return SizedBox(
-              height: 56,
-              child: Column(
-                children: [
-                  buildColumn(curMsg, s, flag, total),
-                ],
-              ),
-            );
-          },
-          itemCount: 4,
-        ),
-      );
-    }
-    // answering for the first time
-    return SizedBox(
-      height: 225,
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          String s = "op" + (index + 1).toString();
-          return Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        if (curMsg?["user"] !=
-                            FirebaseAuth.instance.currentUser?.uid) {
-                          if (s == curMsg?["ans"]) {
-                            _controllerCenter.play();
-                            FirebaseFirestore.instance
-                                .collection("user")
-                                .doc(curUser)
-                                .update({
-                              chatName: FieldValue.increment(1),
-                              "total": FieldValue.increment(1)
-                            });
-                          }
-                          FirebaseFirestore.instance
-                              .collection(widget.chatName)
-                              .doc(curMsg?["msgid"])
-                              .update({
-                            s + "Count": FieldValue.increment(1),
-                            'answered_users': FieldValue.arrayUnion([
-                              {"user": curUser, "answered_opt": s}
-                            ])
-                          });
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.radio_button_off,
-                        color: Colors.black,
-                      )),
-                  Expanded(
-                    child: Text(
-                      curMsg?[s],
-                      maxLines: 3,
-                      textAlign: TextAlign.left,
-                    ),
-                  )
-                ],
-              ),
-              const Divider(
-                color: Colors.grey,
-                height: 1,
-              ),
-            ],
-          );
-        },
-        itemCount: 4,
-      ),
-    );
-  }
-
-  Widget buildColumn(
-      QueryDocumentSnapshot<Object?>? curMsg, String s, int flag, int total) {
-    Color? myCol;
-    if (flag == 1) myCol = Colors.green;
-    if (flag == 2) myCol = const Color.fromRGBO(246, 119, 119, 1);
-    if (flag == 3) myCol = Colors.blue;
-    return Column(
-      children: [
-        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Text(
-            ((curMsg?[s + "Count"] / total * 100).ceil()).toString() + "%",
-            style: TextStyle(color: myCol, fontSize: 10),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          Text(
-            curMsg?[s],
-            style: TextStyle(
-                fontFamily: GoogleFonts.openSans().fontFamily,
-                fontWeight: FontWeight.w500),
-          ),
-        ]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            (flag == 1)
-                ? Icon(
-                    Icons.check_circle,
-                    color: myCol,
-                    size: 20,
-                  )
-                : Icon(
-                    Icons.cancel,
-                    size: 20,
-                    color: myCol,
-                  ),
-            const SizedBox(
-              width: 10,
-            ),
-            LinearPercentIndicator(
-              width: 220.0,
-              lineHeight: 8.0,
-              percent: curMsg?[s + "Count"] / total,
-              progressColor: myCol,
-            ),
-          ],
-        )
-      ],
     );
   }
 }

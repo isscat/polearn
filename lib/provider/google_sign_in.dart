@@ -3,11 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+/*
+This class is used to authenticate user with the help of google_sign_in API .
+This API offers methods like login, logout to authenticate users.
+*/
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
-  Future googleLogin() async {
+  Future googleLogin(context) async {
     try {
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;

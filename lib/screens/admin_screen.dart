@@ -11,6 +11,12 @@ import 'package:polearn/widgets/admin_screen_widgets/table/table.dart';
 
 import 'package:polearn/widgets/logout.dart';
 
+/*
+
+This class builds AdminScreen widget 
+on which admin profile, progress table, chart were displyed with a button
+ to move onto user viewable screens with admin privileges 
+*/
 class AdminScreen extends StatelessWidget {
   const AdminScreen({Key? key}) : super(key: key);
 

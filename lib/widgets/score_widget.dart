@@ -108,7 +108,7 @@ class _ScoreWidgetState extends State<ScoreWidget> {
           border: Border.all(color: Colors.white, width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(30)),
           image: DecorationImage(
-              image: NetworkImage(curMsgUser?["photoUrl"]), fit: BoxFit.fill),
+              image: NetworkImage(curMsgUser?["photoUrl"]), fit: BoxFit.cover),
         ),
       ),
     );

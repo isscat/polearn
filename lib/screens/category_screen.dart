@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:polearn/widgets/category_container.dart';
 import 'package:polearn/widgets/profile_appbar.dart';
 
+/*
+Category screen container containers which are gesture detectable, they get activated
+on tap and will take to chat screen based on each category
+ */
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
 
@@ -50,6 +54,11 @@ class CategoryScreen extends StatelessWidget {
                   chat: "neet",
                   name: "NEET",
                   assetName: "assets/neet.png",
+                ),
+                CategoryContainer(
+                  chat: "community",
+                  name: "Community",
+                  assetName: "assets/chat.png",
                 ),
               ],
             ),

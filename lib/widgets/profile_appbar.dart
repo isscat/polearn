@@ -6,6 +6,7 @@ PreferredSize profileAppBar() {
   return PreferredSize(
     preferredSize: const Size(70, 70),
     child: AppBar(
+        backgroundColor: Colors.pink[200],
         title: const Text("PoLearn"),
         toolbarHeight: 70, // Set this height
         flexibleSpace: Container(

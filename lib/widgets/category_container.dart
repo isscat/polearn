@@ -5,8 +5,26 @@ import 'package:polearn/provider/admin.dart';
 import 'package:polearn/screens/chat_screen.dart';
 import 'package:provider/provider.dart';
 
+var boxDecoration = BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.circular(30),
+  border: Border.all(color: Colors.black, width: 0.0, style: BorderStyle.solid),
+  boxShadow: const [
+    BoxShadow(
+      color: Color.fromRGBO(0, 0, 0, 0.35),
+      // soften the shadow
+      blurRadius: 3,
+      spreadRadius: 0, //extend the shadow
+      offset: Offset(
+        0, // Move to right 10  horizontally
+        4.0, // Move to bottom 10 Vertically
+      ),
+    )
+  ],
+);
+
 // ignore: must_be_immutable
-class CategoryContainer extends StatelessWidget {
+class CategoryContainer extends StatefulWidget {
   String containerName = "", imageName = "", chatName = "";
 
   CategoryContainer({
@@ -19,9 +37,15 @@ class CategoryContainer extends StatelessWidget {
     imageName = assetName;
     chatName = chat;
   }
+
+  @override
+  State<CategoryContainer> createState() => _CategoryContainerState();
+}
+
+class _CategoryContainerState extends State<CategoryContainer> {
   @override
   Widget build(BuildContext context) {
-    bool isAdmin = Provider.of<Admin>(context, listen: false).adminId ==
+    bool isAdmin = Provider.of<Admin>(context, listen: true).adminId ==
         FirebaseAuth.instance.currentUser?.uid;
     return GestureDetector(
       onTap: () {
@@ -29,43 +53,28 @@ class CategoryContainer extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => ChatScreen(
-                      chat: chatName,
-                      name: containerName,
+                      chat: widget.chatName,
+                      name: widget.containerName,
                     )));
       },
       child: Container(
         padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-              color: Colors.black, width: 0.0, style: BorderStyle.solid),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.35),
-              // soften the shadow
-              blurRadius: 3,
-              spreadRadius: 0, //extend the shadow
-              offset: Offset(
-                0, // Move to right 10  horizontally
-                4.0, // Move to bottom 10 Vertically
-              ),
-            )
-          ],
-        ),
+        decoration: boxDecoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image(
-              image: AssetImage(imageName),
+              image: AssetImage(widget.imageName),
               alignment: Alignment.topCenter,
             ),
-            Text(containerName,
+            Text(widget.containerName,
                 style: GoogleFonts.openSans(
                     color: const Color.fromRGBO(25, 52, 152, 1),
                     fontWeight: FontWeight.bold,
-                    fontSize: 20.0)),
-            if (isAdmin) buildTotalQuestionsText(context)
+                    fontSize:
+                        (widget.containerName == "Community") ? 12 : 20.0)),
+            if (isAdmin && !(widget.chatName == "community"))
+              buildTotalQuestionsText(context)
           ],
         ),
       ),
@@ -74,7 +83,8 @@ class CategoryContainer extends StatelessWidget {
 
   buildTotalQuestionsText(context) {
     var score = Provider.of<Admin>(context, listen: true)
-        .progressDetails?[chatName]["total"];
+        .progressDetails?[widget.chatName]["total"];
+
     return Text("total: " + score.toString(),
         style: GoogleFonts.openSans(
             color: const Color.fromRGBO(25, 52, 152, 1),

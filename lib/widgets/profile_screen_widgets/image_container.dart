@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class ImageContainer extends StatelessWidget {
+class ImageContainer extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   var photoUrl;
   ImageContainer({Key? key, required var photoUrl}) : super(key: key) {
@@ -10,30 +10,41 @@ class ImageContainer extends StatelessWidget {
   }
 
   @override
+  State<ImageContainer> createState() => _ImageContainerState();
+}
+
+class _ImageContainerState extends State<ImageContainer> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 120,
       decoration: BoxDecoration(
-          // ignore: prefer_const_literals_to_create_immutables
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(
-                1.0,
-                14.0,
-              ),
-              blurRadius: 4.0,
-              spreadRadius: 0.0,
-            ),
-          ],
-          image:
-              DecorationImage(image: NetworkImage(photoUrl), fit: BoxFit.fill),
-          border: Border.all(
-            color: Colors.white,
-            width: 3,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(70))),
+          border: Border.all(color: Colors.white, width: 4),
+          borderRadius: const BorderRadius.all(Radius.circular(35))),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Image.network(
+          widget.photoUrl,
+          height: 120,
+          width: 120,
+          fit: BoxFit.cover,
+          loadingBuilder: (BuildContext ctx, Widget child,
+              ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return const SizedBox(
+                height: 120,
+                width: 120,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

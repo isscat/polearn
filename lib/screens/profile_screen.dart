@@ -9,24 +9,40 @@ import 'package:polearn/widgets/logout.dart';
 import 'package:polearn/widgets/profile_screen_widgets/color_container.dart';
 import 'package:polearn/widgets/profile_screen_widgets/image_container.dart';
 
+import '../widgets/profile_screen_widgets/profile_edit_container.dart';
+
+/*
+This displays user profile that contains performance and ability to change profile photo
+and username and displays their score
+
+ */
 // ignore: must_be_immutable
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   var userData;
-
+  // ignore: prefer_typing_uninitialized_variables
+  var photoUrl;
   ProfileScreen({Key? key, required DocumentSnapshot<Object?>? user, var color})
       : super(key: key) {
     // ignore: prefer_initializing_formals, unnecessary_this
 
     userData = user;
+    photoUrl = user?["photoUrl"];
   }
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   var colors = [
-    const Color.fromRGBO(25, 52, 152, 1),
-    Colors.red,
-    Colors.pink,
-    Colors.amber,
-    Colors.green
+    const Color.fromARGB(255, 158, 176, 243),
+    const Color.fromARGB(255, 238, 160, 154),
+    const Color.fromARGB(255, 250, 178, 202),
+    const Color.fromARGB(255, 240, 214, 135),
+    const Color.fromARGB(255, 172, 248, 175)
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,17 +52,31 @@ class ProfileScreen extends StatelessWidget {
           children: [
             // blue area it contains text
             ColorContainer(
-              userData: userData,
-              color: colors[0],
+              userData: widget.userData,
+              color: Colors.blue[900],
             ),
             //photo
             Padding(
-              padding: const EdgeInsets.only(top: 70, right: 20),
+              padding: const EdgeInsets.only(top: 40, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ImageContainer(
-                    photoUrl: userData?["photoUrl"],
+                  SizedBox(
+                    height: 120,
+                    width: 150,
+                    child: Stack(
+                      children: [
+                        ImageContainer(
+                          photoUrl: widget.photoUrl,
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: ProfileEditContainer(
+                              uid: widget.userData?["uid"],
+                              func: changePhotoUrl),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -55,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 323),
                 child: Column(
                   children: [
-                    buildText("Performance", 24, colors[0]),
+                    buildText("Performance", 24, Colors.blue[900]),
                     SizedBox(
                       height: 320,
                       child: buildGrid(),
@@ -86,25 +116,26 @@ class ProfileScreen extends StatelessWidget {
       gridDelegate:
           const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       children: <Widget>[
-        buildCircularProgressBar(
-            "Science", userData?["science"], Random().nextInt(colors.length)),
-        buildCircularProgressBar("General Knowledge", userData?["general"],
+        buildCircularProgressBar("Science", widget.userData?["science"],
+            Random().nextInt(colors.length)),
+        buildCircularProgressBar("General Knowledge",
+            widget.userData?["general"], Random().nextInt(colors.length)),
+        buildCircularProgressBar("Languages", widget.userData?["lang"],
+            Random().nextInt(colors.length)),
+        buildCircularProgressBar("Tech Hacks", widget.userData?["tech"],
             Random().nextInt(colors.length)),
         buildCircularProgressBar(
-            "Languages", userData?["lang"], Random().nextInt(colors.length)),
+            "GATE", widget.userData?["gate"], Random().nextInt(colors.length)),
         buildCircularProgressBar(
-            "Tech Hacks", userData?["tech"], Random().nextInt(colors.length)),
-        buildCircularProgressBar(
-            "GATE", userData?["gate"], Random().nextInt(colors.length)),
-        buildCircularProgressBar(
-            "NEET", userData?["neet"], Random().nextInt(colors.length)),
+            "NEET", widget.userData?["neet"], Random().nextInt(colors.length)),
       ],
     );
   }
 
   buildCircularProgressBar(String s, int total, int idx) {
-    double percent =
-        (total / ((userData["total"] == 0) ? 1 : userData["total"])) * 100;
+    double percent = (total /
+            ((widget.userData["total"] == 0) ? 1 : widget.userData["total"])) *
+        100;
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -159,34 +190,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // buildList(userDayWins, int idx) {
-  //   return Container(
-  //     margin: const EdgeInsets.all(14),
-  //     decoration: BoxDecoration(
-  //         border: Border.all(color: colors[idx].withAlpha(90), width: 2)),
-  //     height: 200,
-  //     child: ListView.builder(
-  //       itemBuilder: (context, index) {
-  //         return Container(
-  //           margin: const EdgeInsets.all(10),
-  //           width: 200,
-  //           height: 70,
-  //           decoration: BoxDecoration(
-  //               borderRadius: const BorderRadius.all(Radius.circular(15)),
-  //               border: Border.all(color: colors[idx].withAlpha(85), width: 1)),
-  //           child: Center(
-  //             child: Text(
-  //               DateFormat.yMMMMd().format(userDayWins[index].toDate()),
-  //               style: GoogleFonts.roboto(
-  //                 fontSize: 18,
-  //               ),
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //       itemCount: userDayWins.length,
-  //     ),
-  //   );
-  // }
+  changePhotoUrl(String url, ctx) {
+    setState(() {
+      widget.photoUrl = url;
+      // ignore: deprecated_member_use
+      // Scaffold.of(ctx).hideCurrentSnackBar();
+    });
+  }
 }

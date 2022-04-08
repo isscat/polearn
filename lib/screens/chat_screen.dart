@@ -7,13 +7,25 @@ import 'package:polearn/widgets/chat/new_message.dart';
 
 import 'package:polearn/widgets/score_widget.dart';
 
+import '../widgets/community_widgets/community_message.dart';
+import '../widgets/community_widgets/community_new_message.dart';
+
+/*
+
+Chat screen is where all polls are streamed and displayed,
+new poll can also be added here
+
+ */
 // ignore: must_be_immutable
 class ChatScreen extends StatelessWidget {
   String chatName = "neet";
   String name = "neet";
   User? curUser;
-  ChatScreen({Key? key, String chat = "neet", String name = ""})
-      : super(key: key) {
+  ChatScreen({
+    Key? key,
+    String chat = "neet",
+    String name = "",
+  }) : super(key: key) {
     final user = FirebaseAuth.instance.currentUser!;
     curUser = user;
     chatName = chat;
@@ -25,6 +37,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Colors.pink[200],
           title: Text(name),
           toolbarHeight: 70, // Set this height
           flexibleSpace: Container(
@@ -38,13 +51,17 @@ class ChatScreen extends StatelessWidget {
               ))),
       body: Column(
         children: [
-          Expanded(
-              child: Messages(
-            chat: chatName,
-          )),
-          NewMessage(
-            chat: chatName,
-          )
+          (name == "Community")
+              ? const Expanded(child: CommunityMessage())
+              : Expanded(
+                  child: Messages(
+                  chat: chatName,
+                )),
+          (name == "Community")
+              ? const CommunityNewMessage()
+              : NewMessage(
+                  chat: chatName,
+                )
         ],
       ),
     );

@@ -4,6 +4,11 @@ import 'package:polearn/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
+/*
+This is also one of the screen that is auth screen which is app's front page
+which displays gmail login screen
+and text animation of app name
+ */
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
@@ -51,7 +56,14 @@ class _AuthScreenState extends State<AuthScreen> {
         onPressed: () {
           final provider =
               Provider.of<GoogleSignInProvider>(context, listen: false);
-          provider.googleLogin();
+          provider.googleLogin(context);
+          var snackBar = SnackBar(
+            backgroundColor: Colors.green,
+            content: Row(
+              children: const [Text("Logging..."), CircularProgressIndicator()],
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         },
       ),
     );

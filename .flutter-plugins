@@ -1,10 +1,15 @@
 # This is a generated file; do not edit or check into version control.
 cloud_firestore=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-2.5.4\\
 cloud_firestore_web=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore_web-2.6.10\\
+file_picker=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\file_picker-4.5.1\\
 firebase_auth=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-3.3.10\\
 firebase_auth_web=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-3.3.9\\
 firebase_core=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-1.13.1\\
 firebase_core_web=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-1.6.1\\
+firebase_storage=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-10.2.9\\
+firebase_storage_web=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage_web-3.2.10\\
+flutter_image_compress=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_image_compress-1.1.0\\
+flutter_plugin_android_lifecycle=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-2.0.5\\
 google_sign_in=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\google_sign_in-5.2.4\\
 google_sign_in_web=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\google_sign_in_web-0.10.0+5\\
 path_provider=C:\\Users\\Indira_Yarnagula\\Documents\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-2.0.9\\
