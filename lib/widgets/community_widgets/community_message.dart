@@ -43,7 +43,7 @@ class _CommunityMessageState extends State<CommunityMessage> {
                         : MainAxisAlignment.start,
                     children: [
                       Container(
-                          height: 100,
+                          height: 104,
                           width: 320,
                           decoration: BoxDecoration(
                             // ignore: prefer_const_literals_to_create_immutables
